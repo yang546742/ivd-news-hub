@@ -11,7 +11,7 @@
     <div id="app">
         <!-- 顶部导航 -->
         <nav class="navbar">
-            <div class="container">
+            <div class="container nav-container">
                 <div class="nav-brand">
                     <div class="nav-logo">
                         <svg viewBox="0 0 40 40" width="36" height="36" fill="none">
@@ -44,141 +44,250 @@
             </div>
         </nav>
 
-        <!-- 主容器 -->
-        <div class="container main-content">
-            <!-- 统计信息 — 极简一行 -->
-            <div class="stats-bar">
-                <span class="stat-item">
-                    <span class="stat-num">{{ totalNews }}</span>
-                    <span class="stat-label">条资讯</span>
-                </span>
-                <span class="stat-divider"></span>
-                <span class="stat-item">
-                    <span class="stat-label">更新于</span>
-                    <span class="stat-value">{{ formatDate(lastUpdate) }}</span>
-                </span>
-                <span class="stat-divider"></span>
-                <span class="stat-item">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.5; margin-right:2px;">
-                        <polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-                    </svg>
-                    <span class="stat-label">每日自动更新</span>
-                </span>
-            </div>
+        <!-- 三栏内容布局 -->
+        <div class="container main-layout">
 
-            <!-- 搜索框 -->
-            <div class="search-section">
-                <div class="search-box">
-                    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                    </svg>
-                    <input
-                        v-model="searchKeyword"
-                        type="text"
-                        placeholder="搜索关键词（如：COVID-19、核酸检测、新药等）"
-                        @keyup.enter="searchNews"
-                        class="search-input"
-                    >
-                    <button class="btn-search" @click="searchNews" :disabled="isSearching">
-                        {{ isSearching ? '搜索中...' : '搜索' }}
+            <!-- ===== 左侧栏 ===== -->
+            <aside class="sidebar sidebar-left">
+                <!-- 随机骰子 -->
+                <div class="widget widget-dice">
+                    <button class="dice-btn" @click="randomPick" :disabled="isRandoming">
+                        <span class="dice-icon">{{ isRandoming ? '⏳' : '🎲' }}</span>
+                        <span class="dice-text">{{ isRandoming ? '翻牌中...' : '随便看看' }}</span>
                     </button>
                 </div>
-            </div>
 
-            <!-- 分类标签 -->
-            <div class="category-tabs">
-                <button
-                    v-for="category in categories"
-                    :key="category.key"
-                    class="tab-button"
-                    :class="{ active: activeCategory === category.key }"
-                    @click="activeCategory = category.key; searchResults = []; activePlatform = 'all'"
-                >
-                    {{ category.name }}
-                </button>
-            </div>
+                <!-- 热词云 -->
+                <div class="widget widget-word-cloud">
+                    <div class="widget-header">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                        <span>热词趋势</span>
+                    </div>
+                    <div class="word-cloud" v-if="hotWords.length > 0">
+                        <span v-for="(word, i) in hotWords" :key="i"
+                            class="word-tag"
+                            :style="wordStyle(word)"
+                            @click="searchWord(word.text)">
+                            {{ word.text }}
+                        </span>
+                    </div>
+                    <div v-else class="widget-empty">暂无热词</div>
+                </div>
+            </aside>
 
-            <!-- 热点平台子分类 -->
-            <div v-if="activeCategory === 'hot_topics'" class="platform-sub-tabs">
-                <button
-                    v-for="platform in platforms"
-                    :key="platform.key"
-                    class="sub-tab-button"
-                    :class="{ active: activePlatform === platform.key }"
-                    @click="switchPlatform(platform.key)"
-                >
-                    {{ platform.name }}
-                </button>
-            </div>
-
-            <!-- 搜索结果提示 -->
-            <div v-if="searchResults.length > 0" class="search-result-bar">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                </svg>
-                <span>搜索结果：<strong>{{ searchResults.length }}</strong> 条</span>
-                <button class="btn-clear-search" @click="clearSearch">清除搜索</button>
-            </div>
-
-            <!-- 新闻卡片网格 -->
-            <div class="news-list">
-                <div v-if="displayedNews.length === 0" class="empty-state">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
-                    </svg>
-                    <p v-if="!isLoading && !searchResults.length">暂无新闻数据</p>
-                    <p v-else-if="searchResults.length === 0 && searchKeyword">搜索无结果</p>
-                    <p v-else-if="isLoading">加载中...</p>
+            <!-- ===== 中间主内容 ===== -->
+            <main class="content-center">
+                <!-- 统计信息 -->
+                <div class="stats-bar">
+                    <span class="stat-item">
+                        <span class="stat-num">{{ totalNews }}</span>
+                        <span class="stat-label">条资讯</span>
+                    </span>
+                    <span class="stat-divider"></span>
+                    <span class="stat-item">
+                        <span class="stat-label">更新于</span>
+                        <span class="stat-value">{{ formatDate(lastUpdate) }}</span>
+                    </span>
+                    <span class="stat-divider"></span>
+                    <span class="stat-item">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.5; margin-right:2px;">
+                            <polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                        </svg>
+                        <span class="stat-label">每日自动更新</span>
+                    </span>
                 </div>
 
-                <article v-for="(news, index) in displayedNews" :key="index" class="news-card"
-                    :style="{ '--card-accent': sourceAccent(news.source) }">
-                    <div class="news-card-body">
-                        <div class="news-header">
-                            <h3 class="news-title">
-                                <a :href="news.link" target="_blank" rel="noopener noreferrer">
-                                    {{ news.title }}
-                                </a>
-                            </h3>
-                            <div class="news-meta">
-                                <span class="news-source" :style="{ '--source-dot': sourceAccent(news.source) }">{{ news.source }}</span>
-                                <time class="news-date">{{ formatDate(news.published) }}</time>
+                <!-- 搜索框 -->
+                <div class="search-section">
+                    <div class="search-box">
+                        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                        <input
+                            v-model="searchKeyword"
+                            type="text"
+                            ref="searchInput"
+                            placeholder="搜索关键词（如：COVID-19、核酸检测、新药等）"
+                            @keyup.enter="searchNews"
+                            class="search-input"
+                        >
+                        <button class="btn-search" @click="searchNews" :disabled="isSearching">
+                            {{ isSearching ? '搜索中...' : '搜索' }}
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 分类标签 -->
+                <div class="category-tabs">
+                    <button
+                        v-for="category in categories"
+                        :key="category.key"
+                        class="tab-button"
+                        :class="{ active: activeCategory === category.key }"
+                        @click="activeCategory = category.key; searchResults = []; activePlatform = 'all'"
+                    >
+                        {{ category.name }}
+                    </button>
+                </div>
+
+                <!-- 热点平台子分类 -->
+                <div v-if="activeCategory === 'hot_topics'" class="platform-sub-tabs">
+                    <button
+                        v-for="platform in platforms"
+                        :key="platform.key"
+                        class="sub-tab-button"
+                        :class="{ active: activePlatform === platform.key }"
+                        @click="switchPlatform(platform.key)"
+                    >
+                        {{ platform.name }}
+                    </button>
+                </div>
+
+                <!-- 搜索结果提示 -->
+                <div v-if="searchResults.length > 0" class="search-result-bar">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <span>搜索结果：<strong>{{ searchResults.length }}</strong> 条</span>
+                    <button class="btn-clear-search" @click="clearSearch">清除搜索</button>
+                </div>
+
+                <!-- 新闻卡片网格 -->
+                <div class="news-list">
+                    <div v-if="displayedNews.length === 0" class="empty-state">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                        <p v-if="!isLoading && !searchResults.length">暂无新闻数据</p>
+                        <p v-else-if="searchResults.length === 0 && searchKeyword">搜索无结果</p>
+                        <p v-else-if="isLoading">加载中...</p>
+                    </div>
+
+                    <article v-for="(news, index) in displayedNews" :key="index" class="news-card"
+                        :style="{ '--card-accent': sourceAccent(news.source) }">
+                        <div class="news-card-body">
+                            <div class="news-header">
+                                <h3 class="news-title">
+                                    <a :href="news.link" target="_blank" rel="noopener noreferrer">
+                                        {{ news.title }}
+                                    </a>
+                                </h3>
+                                <div class="news-meta">
+                                    <span class="news-source" :style="{ '--source-dot': sourceAccent(news.source) }">{{ news.source }}</span>
+                                    <time class="news-date">{{ formatDate(news.published) }}</time>
+                                </div>
+                            </div>
+                            <p v-if="news.summary" class="news-summary">{{ news.summary }}</p>
+                        </div>
+                        <div class="news-card-footer">
+                            <a :href="news.link" target="_blank" rel="noopener noreferrer" class="news-link">
+                                阅读原文
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- 分页 -->
+                <div v-if="totalPages > 1" class="pagination">
+                    <button @click="currentPage--" :disabled="currentPage === 1" class="btn-page">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6"/>
+                        </svg>
+                        上一页
+                    </button>
+                    <div class="page-info">
+                        <span class="page-current">{{ currentPage }}</span>
+                        <span class="page-sep">/</span>
+                        <span class="page-total">{{ totalPages }}</span>
+                    </div>
+                    <button @click="currentPage++" :disabled="currentPage === totalPages" class="btn-page">
+                        下一页
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"/>
+                        </svg>
+                    </button>
+                </div>
+            </main>
+
+            <!-- ===== 右侧栏 ===== -->
+            <aside class="sidebar sidebar-right">
+                <!-- 每日金句 -->
+                <div class="widget widget-quote">
+                    <div class="widget-header">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        <span>每日一言</span>
+                    </div>
+                    <div class="quote-body">
+                        <p class="quote-text">“{{ dailyQuote }}”</p>
+                    </div>
+                </div>
+
+                <!-- AI 今日辣评 -->
+                <div class="widget widget-ai-review">
+                    <div class="widget-header">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                        <span>AI 今日辣评</span>
+                    </div>
+                    <div class="ai-review-body">
+                        <p class="ai-review-text" v-if="aiHotReview">{{ aiHotReview }}</p>
+                        <p v-else class="widget-empty">暂无评论</p>
+                    </div>
+                </div>
+
+                <!-- 复古电视 -->
+                <div class="widget widget-retro-tv">
+                    <div class="widget-header">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
+                        <span>经典小品</span>
+                    </div>
+                    <div class="retro-tv">
+                        <div class="tv-body">
+                            <div class="tv-screen">
+                                <iframe
+                                    src="https://player.bilibili.com/player.html?bvid=BV1jdcKzAEj3&as_wide=1&high_quality=1&danmaku=0"
+                                    allowfullscreen
+                                    loading="lazy">
+                                </iframe>
+                            </div>
+                            <div class="tv-controls">
+                                <span class="tv-knob"></span>
+                                <span class="tv-knob tv-knob-right"></span>
+                            </div>
+                            <div class="tv-legs">
+                                <span class="tv-leg"></span>
+                                <span class="tv-leg"></span>
                             </div>
                         </div>
-                        <p v-if="news.summary" class="news-summary">{{ news.summary }}</p>
                     </div>
-                    <div class="news-card-footer">
-                        <a :href="news.link" target="_blank" rel="noopener noreferrer" class="news-link">
-                            阅读原文
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
-                            </svg>
-                        </a>
-                    </div>
-                </article>
-            </div>
-
-            <!-- 分页 -->
-            <div v-if="totalPages > 1" class="pagination">
-                <button @click="currentPage--" :disabled="currentPage === 1" class="btn-page">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="15 18 9 12 15 6"/>
-                    </svg>
-                    上一页
-                </button>
-                <div class="page-info">
-                    <span class="page-current">{{ currentPage }}</span>
-                    <span class="page-sep">/</span>
-                    <span class="page-total">{{ totalPages }}</span>
                 </div>
-                <button @click="currentPage++" :disabled="currentPage === totalPages" class="btn-page">
-                    下一页
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="9 18 15 12 9 6"/>
-                    </svg>
-                </button>
-            </div>
+            </aside>
         </div>
+
+        <!-- 随机翻牌浮层 -->
+        <transition name="modal-fade">
+            <div v-if="randomResult" class="random-overlay" @click.self="closeRandom">
+                <div class="random-modal" :style="{ '--card-accent': randomAccent }">
+                    <div class="random-modal-icon">🎲</div>
+                    <div class="random-modal-label">手气不错！</div>
+                    <h3 class="random-modal-title">
+                        <a :href="randomResult.link" target="_blank" rel="noopener noreferrer">{{ randomResult.title }}</a>
+                    </h3>
+                    <div class="random-modal-meta">
+                        <span class="random-source">{{ randomResult.source }}</span>
+                        <span class="random-date">{{ formatDate(randomResult.published) }}</span>
+                    </div>
+                    <p v-if="randomResult.summary" class="random-modal-summary">{{ randomResult.summary }}</p>
+                    <div class="random-modal-actions">
+                        <a :href="randomResult.link" target="_blank" rel="noopener noreferrer" class="random-link-btn">阅读原文</a>
+                        <button class="random-again-btn" @click="randomPick">再抽一次</button>
+                        <button class="random-close-btn" @click="closeRandom">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </transition>
 
         <!-- 页脚 -->
         <footer class="footer">
