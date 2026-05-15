@@ -164,11 +164,14 @@
                     </div>
 
                     <article v-for="(news, index) in displayedNews" :key="index" class="news-card"
+                        :class="{ 'is-hot': isHotItem(news) }"
                         :style="{ '--card-accent': sourceAccent(news.source) }">
+                        <span class="card-watermark">{{ sourceWatermark(news.source) }}</span>
                         <div class="news-card-body">
                             <div class="news-header">
                                 <h3 class="news-title">
                                     <a :href="news.link" target="_blank" rel="noopener noreferrer">
+                                        <span v-if="isHotItem(news)" class="hot-badge" title="热度暴击">🔥</span>
                                         {{ news.title }}
                                     </a>
                                 </h3>
@@ -214,17 +217,6 @@
 
             <!-- ===== 右侧栏 ===== -->
             <aside class="sidebar sidebar-right">
-                <!-- 每日金句 -->
-                <div class="widget widget-quote">
-                    <div class="widget-header">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                        <span>每日一言</span>
-                    </div>
-                    <div class="quote-body">
-                        <p class="quote-text">“{{ dailyQuote }}”</p>
-                    </div>
-                </div>
-
                 <!-- AI 今日辣评 -->
                 <div class="widget widget-ai-review">
                     <div class="widget-header">
@@ -237,30 +229,14 @@
                     </div>
                 </div>
 
-                <!-- 复古电视 -->
-                <div class="widget widget-retro-tv">
+                <!-- 每日一言（放大版） -->
+                <div class="widget widget-quote widget-quote-hero">
                     <div class="widget-header">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
-                        <span>经典小品</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        <span>每日一言</span>
                     </div>
-                    <div class="retro-tv">
-                        <div class="tv-body">
-                            <div class="tv-screen">
-                                <iframe
-                                    src="https://player.bilibili.com/player.html?bvid=BV1jdcKzAEj3&as_wide=1&high_quality=1&danmaku=0"
-                                    allowfullscreen
-                                    loading="lazy">
-                                </iframe>
-                            </div>
-                            <div class="tv-controls">
-                                <span class="tv-knob"></span>
-                                <span class="tv-knob tv-knob-right"></span>
-                            </div>
-                            <div class="tv-legs">
-                                <span class="tv-leg"></span>
-                                <span class="tv-leg"></span>
-                            </div>
-                        </div>
+                    <div class="quote-body quote-body-hero">
+                        <p class="quote-text-hero">“{{ dailyQuote }}”</p>
                     </div>
                 </div>
             </aside>
@@ -288,6 +264,40 @@
                 </div>
             </div>
         </transition>
+
+        <!-- ===== 底部：经典小品（可拖拽缩放） ===== -->
+        <div class="container bottom-section">
+            <div class="widget widget-retro-tv" id="retro-tv-widget">
+                <div class="tv-drag-handle">
+                    <div class="widget-header">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
+                        <span>经典小品 · 拖拽移动 | 右下角缩放</span>
+                    </div>
+                </div>
+                <div class="retro-tv">
+                    <div class="tv-body">
+                        <div class="tv-screen" id="tv-screen">
+                            <iframe
+                                src="https://player.bilibili.com/player.html?bvid=BV1LD421T727&as_wide=1&high_quality=1&danmaku=0"
+                                allowfullscreen
+                                loading="lazy">
+                            </iframe>
+                        </div>
+                        <div class="tv-controls">
+                            <span class="tv-knob"></span>
+                            <span class="tv-knob tv-knob-right"></span>
+                        </div>
+                        <div class="tv-legs">
+                            <span class="tv-leg"></span>
+                            <span class="tv-leg"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tv-fallback">
+                    如果视频无法加载，<a href="https://www.bilibili.com/video/BV1LD421T727" target="_blank" rel="noopener noreferrer">点此在B站观看</a>
+                </div>
+            </div>
+        </div>
 
         <!-- 页脚 -->
         <footer class="footer">

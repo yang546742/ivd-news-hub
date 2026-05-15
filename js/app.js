@@ -124,6 +124,28 @@ function extractHotWordsFallback(text, maxWords = 30) {
         .map(([text, count]) => ({ text, count }));
 }
 
+// ==================== 平台水印图标映射 ====================
+const SOURCE_WATERMARKS = {
+    '今日头条': '📰',
+    '百度热搜': '🔍',
+    '微博热搜': '💬',
+    '抖音热榜': '🎵',
+    '科学网要闻': '🔬',
+    '科学网博文': '📝',
+    '知乎热榜': '💡',
+    'B站热门': '📺',
+    '小红书': '📕',
+    '喷嚏图卦': '🖼️',
+    '科研通-每日热点': '📰',
+    'Nature': '🧬',
+    'Science': '🔭',
+    '丁香园': '💊',
+    '生物谷': '🧫',
+    'PubMed': '📋',
+    'Google Scholar': '🎓',
+    'arXiv': '📄',
+};
+
 // ==================== 随机颜色（基于字符串哈希） ====================
 function hashColor(str) {
     const colors = ['#0ea5e9', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#ec4899', '#06b6d4', '#6366f1'];
@@ -323,6 +345,25 @@ const app = createApp({
             });
         },
 
+        // ---------- 卡片水印 ----------
+        sourceWatermark(source) {
+            for (const [key, emoji] of Object.entries(SOURCE_WATERMARKS)) {
+                if (source.includes(key)) return emoji;
+            }
+            return '📄';
+        },
+
+        // ---------- 热度暴击判定 ----------
+        isHotItem(item) {
+            if (!item || !item.title) return false;
+            // 基于标题哈希的确定性判定，约15%的卡片获得🔥
+            let hash = 0;
+            for (let i = 0; i < item.title.length; i++) {
+                hash = item.title.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            return Math.abs(hash) % 7 === 0;
+        },
+
         // ---------- 随机骰子 ----------
         randomPick() {
             if (this.allNewsFlat.length === 0) return;
@@ -432,7 +473,48 @@ const app = createApp({
 
     mounted() {
         this.init();
-    }
+        this.$nextTick(() => this.initTvDrag());
+    },
+
+    // ---------- 复古电视拖拽 ----------
+    initTvDrag() {
+        const widget = document.getElementById('retro-tv-widget');
+        const handle = widget?.querySelector('.tv-drag-handle');
+        if (!widget || !handle) return;
+
+        let isDragging = false, startX, startY, origX, origY;
+
+        handle.addEventListener('mousedown', (e) => {
+            if (e.target.tagName === 'IFRAME') return;
+            isDragging = true;
+            const rect = widget.getBoundingClientRect();
+            startX = e.clientX;
+            startY = e.clientY;
+            origX = rect.left;
+            origY = rect.top;
+            widget.style.position = 'fixed';
+            widget.style.left = origX + 'px';
+            widget.style.top = origY + 'px';
+            widget.style.zIndex = 200;
+            widget.style.margin = '0';
+            widget.style.width = rect.width + 'px';
+            widget.style.maxWidth = '560px';
+            document.body.appendChild(widget);
+
+            const onMove = (ev) => {
+                if (!isDragging) return;
+                widget.style.left = (origX + ev.clientX - startX) + 'px';
+                widget.style.top = (origY + ev.clientY - startY) + 'px';
+            };
+            const onUp = () => {
+                isDragging = false;
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onUp);
+            };
+            document.addEventListener('mousemove', onMove);
+            document.addEventListener('mouseup', onUp);
+        });
+    },
 });
 
 app.mount('#app');
