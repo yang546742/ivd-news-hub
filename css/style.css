@@ -686,14 +686,14 @@ a {
 
 .platform-sub-tabs {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
     margin-bottom: 18px;
     padding: 10px 0;
 }
 
 .sub-tab-button {
-    padding: 8px 12px;
+    padding: 7px 6px;
     background: var(--card-bg);
     backdrop-filter: blur(4px);
     border: 1px solid var(--border);
@@ -1310,9 +1310,11 @@ a {
 }
 
 @keyframes dice-spin {
-    0% { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(360deg) scale(1.2); }
-    100% { transform: rotate(720deg) scale(1); }
+    0% { transform: perspective(200px) rotateX(0deg) rotateY(0deg) scale(1); }
+    25% { transform: perspective(200px) rotateX(180deg) rotateY(90deg) scale(1.2); }
+    50% { transform: perspective(200px) rotateX(360deg) rotateY(180deg) scale(1.15); }
+    75% { transform: perspective(200px) rotateX(540deg) rotateY(270deg) scale(1.2); }
+    100% { transform: perspective(200px) rotateX(720deg) rotateY(360deg) scale(1); }
 }
 
 /* ==================== 热词云增强 - 错落排版 ==================== */
