@@ -1,0 +1,42 @@
+name: 每日自动爬取
+
+on:
+  schedule:
+    # 北京时间每天 6:00 和 18:00 执行（UTC 22:00 和 10:00）
+    - cron: '0 22,10 * * *'
+  workflow_dispatch:  # 支持手动触发
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装依赖
+        run: |
+          pip install --upgrade pip
+          pip install -r backend/requirements.txt
+
+      - name: 生成初始种子数据
+        run: cd backend && python generate_test_data.py
+
+      - name: 运行爬虫
+        run: cd backend && python run_crawler.py
+
+      - name: 复制数据到前端目录
+        run: cp backend/data/news.json data/news.json
+
+      - name: 提交并推送更新
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/news.json
+          git diff --quiet && git diff --staged --quiet || \
+            git commit -m "chore: 每日数据自动更新 $(date +'%Y-%m-%d %H:%M')"
+          git push

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IVD行业信息聚合平台</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 顶部导航 -->
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <div class="nav-logo">
+                        <svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+                            <rect width="40" height="40" rx="10" fill="url(#logoGrad)"/>
+                            <path d="M12 28V16l8-4 8 4v12l-8 4-8-4z" fill="white" opacity="0.9"/>
+                            <path d="M16 20l3 3 5-6" stroke="url(#logoGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                            <defs>
+                                <linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40">
+                                    <stop offset="0%" stop-color="#2563eb"/>
+                                    <stop offset="100%" stop-color="#1d4ed8"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div class="nav-title">
+                        <h1>IVD行业信息聚合平台</h1>
+                        <span class="nav-subtitle" v-if="lastUpdate !== '加载中...'">更新于 {{ lastUpdate }}</span>
+                    </div>
+                </div>
+                <div class="nav-menu">
+                    <button class="btn-refresh" @click="refreshNews" :disabled="isLoading">
+                        <svg v-if="!isLoading" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 4 23 10 17 10"/>
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                        </svg>
+                        <span v-if="isLoading" class="spinner"></span>
+                        {{ isLoading ? '加载中...' : '刷新' }}
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 主容器 -->
+        <div class="container main-content">
+            <!-- 统计信息 — 极简一行 -->
+            <div class="stats-bar">
+                <span class="stat-item">
+                    <span class="stat-num">{{ totalNews }}</span>
+                    <span class="stat-label">条资讯</span>
+                </span>
+                <span class="stat-divider"></span>
+                <span class="stat-item">
+                    <span class="stat-label">更新于</span>
+                    <span class="stat-value">{{ formatDate(lastUpdate) }}</span>
+                </span>
+                <span class="stat-divider"></span>
+                <span class="stat-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.5; margin-right:2px;">
+                        <polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                    </svg>
+                    <span class="stat-label">每日自动更新</span>
+                </span>
+            </div>
+
+            <!-- 搜索框 -->
+            <div class="search-section">
+                <div class="search-box">
+                    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input
+                        v-model="searchKeyword"
+                        type="text"
+                        placeholder="搜索关键词（如：COVID-19、核酸检测、新药等）"
+                        @keyup.enter="searchNews"
+                        class="search-input"
+                    >
+                    <button class="btn-search" @click="searchNews" :disabled="isSearching">
+                        {{ isSearching ? '搜索中...' : '搜索' }}
+                    </button>
+                </div>
+            </div>
+
+            <!-- 分类标签 -->
+            <div class="category-tabs">
+                <button
+                    v-for="category in categories"
+                    :key="category.key"
+                    class="tab-button"
+                    :class="{ active: activeCategory === category.key }"
+                    @click="activeCategory = category.key; searchResults = []; activePlatform = 'all'"
+                >
+                    {{ category.name }}
+                </button>
+            </div>
+
+            <!-- 热点平台子分类 -->
+            <div v-if="activeCategory === 'hot_topics'" class="platform-sub-tabs">
+                <button
+                    v-for="platform in platforms"
+                    :key="platform.key"
+                    class="sub-tab-button"
+                    :class="{ active: activePlatform === platform.key }"
+                    @click="switchPlatform(platform.key)"
+                >
+                    {{ platform.name }}
+                </button>
+            </div>
+
+            <!-- 搜索结果提示 -->
+            <div v-if="searchResults.length > 0" class="search-result-bar">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <span>搜索结果：<strong>{{ searchResults.length }}</strong> 条</span>
+                <button class="btn-clear-search" @click="clearSearch">清除搜索</button>
+            </div>
+
+            <!-- 新闻卡片网格 -->
+            <div class="news-list">
+                <div v-if="displayedNews.length === 0" class="empty-state">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                    </svg>
+                    <p v-if="!isLoading && !searchResults.length">暂无新闻数据</p>
+                    <p v-else-if="searchResults.length === 0 && searchKeyword">搜索无结果</p>
+                    <p v-else-if="isLoading">加载中...</p>
+                </div>
+
+                <article v-for="(news, index) in displayedNews" :key="index" class="news-card"
+                    :style="{ '--card-accent': sourceAccent(news.source) }">
+                    <div class="news-card-body">
+                        <div class="news-header">
+                            <h3 class="news-title">
+                                <a :href="news.link" target="_blank" rel="noopener noreferrer">
+                                    {{ news.title }}
+                                </a>
+                            </h3>
+                            <div class="news-meta">
+                                <span class="news-source" :style="{ '--source-dot': sourceAccent(news.source) }">{{ news.source }}</span>
+                                <time class="news-date">{{ formatDate(news.published) }}</time>
+                            </div>
+                        </div>
+                        <p v-if="news.summary" class="news-summary">{{ news.summary }}</p>
+                    </div>
+                    <div class="news-card-footer">
+                        <a :href="news.link" target="_blank" rel="noopener noreferrer" class="news-link">
+                            阅读原文
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
+                            </svg>
+                        </a>
+                    </div>
+                </article>
+            </div>
+
+            <!-- 分页 -->
+            <div v-if="totalPages > 1" class="pagination">
+                <button @click="currentPage--" :disabled="currentPage === 1" class="btn-page">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    上一页
+                </button>
+                <div class="page-info">
+                    <span class="page-current">{{ currentPage }}</span>
+                    <span class="page-sep">/</span>
+                    <span class="page-total">{{ totalPages }}</span>
+                </div>
+                <button @click="currentPage++" :disabled="currentPage === totalPages" class="btn-page">
+                    下一页
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <p>IVD行业信息聚合平台</p>
+                    <p class="footer-meta">数据来源包括 Nature、ScienceDaily、丁香园、生物谷、科研通等 | 涵盖今日头条、微博、知乎、文献平台及AI平台 | 每日自动更新</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

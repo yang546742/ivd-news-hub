@@ -1,0 +1,464 @@
+{
+  "ivd_sources": [
+    {
+      "title": "国家药监局批准新一代新冠病毒抗原检测试剂盒上市",
+      "link": "https://www.nmpa.gov.cn/zwfw/sdxx/sdxxylqx/202501011234567890.html",
+      "summary": "国家药监局批准了新一代新型冠状病毒抗原检测试剂盒上市，该产品具有快速、准确、操作简便等优点。",
+      "published": "2026-05-13T08:30:00",
+      "source": "NMPA"
+    },
+    {
+      "title": "2026年第一季度体外诊断行业运行情况分析",
+      "link": "https://www.ivdchina.org/news/industry/2026/0415/article_1234.html",
+      "summary": "2026年第一季度体外诊断行业整体运行平稳，分子诊断和免疫诊断领域保持较快增长。",
+      "published": "2026-04-15T10:00:00",
+      "source": "中国体外诊断网"
+    },
+    {
+      "title": "化学发光免疫分析技术新突破：国产替代加速",
+      "link": "https://www.bioivd.com/news/industry/2026/0510/article_5678.html",
+      "summary": "国内多家企业取得化学发光免疫分析技术突破，国产替代进程显著加速，进口品牌市场份额持续下降。",
+      "published": "2026-05-10T09:15:00",
+      "source": "小桔灯网"
+    },
+    {
+      "title": "数字PCR技术在肿瘤早筛中的应用进展",
+      "link": "https://www.dxy.cn/buzz/2026/05/08/12345678.html",
+      "summary": "数字PCR技术凭借其高灵敏度和绝对定量能力，在肿瘤早筛领域展现出巨大应用潜力。",
+      "published": "2026-05-08T14:30:00",
+      "source": "丁香园"
+    },
+    {
+      "title": "2026年POCT市场规模预计突破800亿元",
+      "link": "https://www.bioon.com/industry/2026/0512/1234567.shtml",
+      "summary": "即时检测（POCT）市场持续扩大，2026年全球POCT市场规模预计突破800亿元，基层医疗和家庭健康监测为主要增长驱动力。",
+      "published": "2026-05-12T11:00:00",
+      "source": "生物谷"
+    },
+    {
+      "title": "流式细胞术在临床诊断中的应用新进展",
+      "link": "https://www.vcbeat.net/news/2026/0511/detail_12345.html",
+      "summary": "流式细胞术在血液疾病诊断、免疫功能评估等领域应用不断拓展，国产流式细胞仪技术取得重要突破。",
+      "published": "2026-05-11T16:45:00",
+      "source": "动脉网"
+    },
+    {
+      "title": "质谱检测技术在临床检验中的应用日益广泛",
+      "link": "https://www.ybj.com/industry/2026/0509/content_12345.html",
+      "summary": "质谱检测技术凭借高通量、高特异性等优势，在临床检验中的应用日益广泛，涵盖维生素检测、药物浓度监测等领域。",
+      "published": "2026-05-09T08:20:00",
+      "source": "医药经济报"
+    },
+    {
+      "title": "液体活检技术进入快速发展期",
+      "link": "https://www.healthnews.cn/medical/2026/0507/article_98765.html",
+      "summary": "液体活检技术作为非侵入性检测手段，在肿瘤早筛、疗效监测和复发预警等方面展现出巨大临床价值。",
+      "published": "2026-05-07T10:30:00",
+      "source": "健康新闻"
+    },
+    {
+      "title": "全自动生化分析仪国产化率突破60%",
+      "link": "https://www.ivdchina.org/news/technology/2026/0506/article_1235.html",
+      "summary": "我国全自动生化分析仪国产化率突破60%，国产品牌在技术性能和稳定性方面已接近进口产品水平。",
+      "published": "2026-05-06T09:00:00",
+      "source": "中国体外诊断网"
+    },
+    {
+      "title": "急诊检验能力建设规范发布实施",
+      "link": "https://www.nhc.gov.cn/yzygj/s7659/202605/abc123456789.shtml",
+      "summary": "国家卫生健康委发布急诊检验能力建设规范，对急诊检验项目设置、设备配置和质量管理提出明确要求。",
+      "published": "2026-05-05T15:00:00",
+      "source": "国家卫健委"
+    },
+    {
+      "title": "微流控芯片技术在IVD领域应用前景广阔",
+      "link": "https://www.bioivd.com/news/technology/2026/0504/article_5679.html",
+      "summary": "微流控芯片技术凭借微型化、集成化、自动化等优势，在IVD领域展现出广阔应用前景。",
+      "published": "2026-05-04T13:20:00",
+      "source": "小桔灯网"
+    },
+    {
+      "title": "自身抗体检测市场快速增长",
+      "link": "https://www.dxy.cn/buzz/2026/05/03/12345679.html",
+      "summary": "随着风湿免疫疾病诊断需求增加，自身抗体检测市场呈现快速增长态势，国产试剂市场份额持续提升。",
+      "published": "2026-05-03T11:10:00",
+      "source": "丁香园"
+    }
+  ],
+  "biotech_sources": [
+    {
+      "title": "国产mRNA疫苗获得WHO紧急使用认证",
+      "link": "https://www.bioon.com/biotech/2026/0513/1234568.shtml",
+      "summary": "我国自主研发的mRNA疫苗正式获得世界卫生组织紧急使用认证，标志着我国mRNA技术平台达到国际先进水平。",
+      "published": "2026-05-13T07:00:00",
+      "source": "生物谷"
+    },
+    {
+      "title": "CAR-T细胞疗法新靶点发现带来治疗突破",
+      "link": "https://www.vcbeat.net/news/2026/0512/detail_12346.html",
+      "summary": "研究团队发现新型CAR-T细胞疗法靶点，在血液肿瘤和实体瘤治疗中展现出良好的安全性和有效性。",
+      "published": "2026-05-12T09:30:00",
+      "source": "动脉网"
+    },
+    {
+      "title": "基因编辑技术CRISPR在遗传病治疗中的新进展",
+      "link": "https://www.dxy.cn/buzz/2026/0511/12345680.html",
+      "summary": "CRISPR基因编辑技术在遗传病治疗领域取得重要进展，临床试验结果显示患者症状得到显著改善。",
+      "published": "2026-05-11T14:00:00",
+      "source": "丁香园"
+    },
+    {
+      "title": "生物类似药市场格局分析与展望",
+      "link": "https://www.ybj.com/biotech/2026/0510/content_12346.html",
+      "summary": "随着多个重磅生物原研药专利到期，生物类似药市场迎来快速发展期，国内企业积极布局。",
+      "published": "2026-05-10T10:30:00",
+      "source": "医药经济报"
+    },
+    {
+      "title": "单克隆抗体药物研发管线持续丰富",
+      "link": "https://www.bioon.com/biotech/2026/0509/1234569.shtml",
+      "summary": "我国单克隆抗体药物研发管线持续丰富，多个PD-1/PD-L1抑制剂新适应症获得批准。",
+      "published": "2026-05-09T08:45:00",
+      "source": "生物谷"
+    },
+    {
+      "title": "细胞治疗产品GMP规范正式实施",
+      "link": "https://www.nmpa.gov.cn/zwfw/sdxx/sdxxyp/20260508123456789.html",
+      "summary": "国家药监局发布细胞治疗产品GMP规范，对细胞治疗产品的生产质量管理提出具体要求。",
+      "published": "2026-05-08T16:00:00",
+      "source": "NMPA"
+    },
+    {
+      "title": "AI辅助药物研发取得重大突破",
+      "link": "https://www.healthnews.cn/biotech/2026/0507/article_98766.html",
+      "summary": "AI辅助药物研发平台成功发现多个新药候选分子，将传统药物研发周期缩短了50%以上。",
+      "published": "2026-05-07T10:00:00",
+      "source": "健康新闻"
+    },
+    {
+      "title": "抗体偶联药物（ADC）成为抗癌新热点",
+      "link": "https://www.vcbeat.net/news/2026/0506/detail_12347.html",
+      "summary": "抗体偶联药物（ADC）凭借其精准靶向和高效杀伤的特点，成为抗肿瘤药物研发新热点。",
+      "published": "2026-05-06T13:15:00",
+      "source": "动脉网"
+    },
+    {
+      "title": "基因治疗药物临床试验取得积极结果",
+      "link": "https://www.dxy.cn/buzz/2026/0505/12345681.html",
+      "summary": "多个基因治疗药物在临床试验中取得积极结果，涵盖血友病、地中海贫血等多个遗传性疾病领域。",
+      "published": "2026-05-05T09:30:00",
+      "source": "丁香园"
+    },
+    {
+      "title": "微生物组疗法进入临床应用新阶段",
+      "link": "https://www.bioon.com/biotech/2026/0504/1234570.shtml",
+      "summary": "微生物组疗法从基础研究走向临床应用，粪菌移植和益生菌制剂在多种疾病治疗中展现潜力。",
+      "published": "2026-05-04T11:20:00",
+      "source": "生物谷"
+    }
+  ],
+  "academic_sources": [
+    {
+      "title": "Nature：新型生物标志物可实现阿尔茨海默病早期诊断",
+      "link": "https://www.nature.com/articles/s41591-026-01234-5",
+      "summary": "研究团队发现一组新型血液生物标志物，可在症状出现前10年预测阿尔茨海默病风险。",
+      "published": "2026-05-12T18:00:00",
+      "source": "Nature Medicine"
+    },
+    {
+      "title": "Science：基于人工智能的病理诊断系统准确率达96%",
+      "link": "https://www.science.org/doi/10.1126/science.adf1234",
+      "summary": "研究团队开发的人工智能病理诊断系统在多种癌症诊断中准确率达96%，接近资深病理医师水平。",
+      "published": "2026-05-11T14:00:00",
+      "source": "Science"
+    },
+    {
+      "title": "中国学者在单细胞测序技术领域取得重要突破",
+      "link": "https://www.cell.com/cell/fulltext/S0092-8674(26)00123-4",
+      "summary": "中国研究团队开发的新型单细胞测序技术大幅降低了检测成本，提高了检测通量。",
+      "published": "2026-05-10T10:00:00",
+      "source": "Cell"
+    },
+    {
+      "title": "Lancet：全球疾病负担研究更新慢性病防控数据",
+      "link": "https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(26)00123-4/fulltext",
+      "summary": "最新全球疾病负担研究报告显示，慢性非传染性疾病已成为全球主要健康威胁。",
+      "published": "2026-05-09T19:00:00",
+      "source": "The Lancet"
+    },
+    {
+      "title": "NEJM：新型抗凝药物三期临床试验取得阳性结果",
+      "link": "https://www.nejm.org/doi/full/10.1056/NEJMoa2600123",
+      "summary": "新型口服抗凝药物在房颤患者卒中预防方面展现出优于现有药物的安全性和有效性。",
+      "published": "2026-05-08T17:30:00",
+      "source": "NEJM"
+    },
+    {
+      "title": "液体活检用于多癌种早期筛查的前瞻性队列研究",
+      "link": "https://ascopubs.org/doi/10.1200/JCO.26.12345",
+      "summary": "大规模前瞻性队列研究证实，液体活检可用于多种癌症的早期筛查，总体灵敏度超过70%。",
+      "published": "2026-05-07T08:00:00",
+      "source": "Journal of Clinical Oncology"
+    },
+    {
+      "title": "Nature Biotechnology：新型CRISPR诊断平台可实现即时检测",
+      "link": "https://www.nature.com/articles/nbt.2026.01234",
+      "summary": "研究团队开发了基于CRISPR的新型诊断平台，可在30分钟内完成核酸靶标的即时检测。",
+      "published": "2026-05-06T16:00:00",
+      "source": "Nature Biotechnology"
+    },
+    {
+      "title": "学术研究：肠道菌群检测在健康管理中的应用前景",
+      "link": "https://www.dxy.cn/buzz/2026/0505/12345682.html",
+      "summary": "最新研究综述系统总结了肠道菌群检测在个体化健康管理中的应用前景和挑战。",
+      "published": "2026-05-05T10:00:00",
+      "source": "丁香园学术"
+    }
+  ],
+  "industry_data": [
+    {
+      "title": "2025年中国IVD行业市场规模达1200亿元",
+      "link": "https://www.ivdchina.org/news/industry/2026/0513/article_1236.html",
+      "summary": "2025年中国IVD行业市场规模达到1200亿元人民币，同比增长15%，免疫诊断和分子诊断是最大的细分市场。",
+      "published": "2026-05-13T10:00:00",
+      "source": "中国体外诊断网"
+    },
+    {
+      "title": "药智网：2026年Q1医疗器械注册审批统计分析",
+      "link": "https://www.yaozh.com/report/2026/0512/report_12345.html",
+      "summary": "2026年第一季度国家药监局共批准医疗器械注册申请1800余项，其中IVD产品占比约35%。",
+      "published": "2026-05-12T08:30:00",
+      "source": "药智网"
+    },
+    {
+      "title": "全球精准医疗市场规模预测分析",
+      "link": "https://www.ybj.com/industry/2026/0511/content_12347.html",
+      "summary": "全球精准医疗市场规模预计2028年将达到5000亿美元，中国市场份额占比持续提升。",
+      "published": "2026-05-11T14:00:00",
+      "source": "医药经济报"
+    },
+    {
+      "title": "体外诊断试剂集采政策解读与影响分析",
+      "link": "https://www.bioivd.com/news/policy/2026/0510/article_5680.html",
+      "summary": "IVD试剂集采政策持续推进，对行业价格体系和竞争格局产生深远影响。",
+      "published": "2026-05-10T09:30:00",
+      "source": "小桔灯网"
+    },
+    {
+      "title": "2026年中国医疗器械进出口贸易数据报告",
+      "link": "https://www.healthnews.cn/industry/2026/0509/article_98767.html",
+      "summary": "2026年一季度中国医疗器械进出口贸易数据发布，IVD产品出口保持增长态势。",
+      "published": "2026-05-09T11:00:00",
+      "source": "健康新闻"
+    },
+    {
+      "title": "NMPA发布2025年度医疗器械监督管理工作报告",
+      "link": "https://www.nmpa.gov.cn/zwgk/ghjh/20260508123456789.html",
+      "summary": "国家药监局发布2025年度医疗器械监督管理工作报告，全面总结医疗器械监管成效。",
+      "published": "2026-05-08T15:00:00",
+      "source": "NMPA"
+    },
+    {
+      "title": "基层医疗机构检验能力建设资金支持政策出台",
+      "link": "https://www.nhc.gov.cn/caiwujusi/s7890/202605/def123456789.shtml",
+      "summary": "国家卫健委联合财政部出台基层医疗机构检验能力建设专项资金支持政策。",
+      "published": "2026-05-07T10:30:00",
+      "source": "国家卫健委"
+    },
+    {
+      "title": "第三方医学检验市场规模持续扩大",
+      "link": "https://www.vcbeat.net/news/2026/0506/detail_12348.html",
+      "summary": "第三方医学检验市场保持高速增长，2026年市场规模预计突破400亿元。",
+      "published": "2026-05-06T09:20:00",
+      "source": "动脉网"
+    },
+    {
+      "title": "国产高端质谱仪实现产业化突破",
+      "link": "https://www.bioon.com/industry/2026/0505/1234571.shtml",
+      "summary": "国产高端质谱仪实现产业化突破，多家企业产品获得NMPA注册认证，进口替代进程加速。",
+      "published": "2026-05-05T13:45:00",
+      "source": "生物谷"
+    },
+    {
+      "title": "国家医保局发布体外诊断试剂医保支付标准调整方案",
+      "link": "https://www.nhsa.gov.cn/art/2026/5/4/art_1234_56789.html",
+      "summary": "国家医保局发布体外诊断试剂医保支付标准调整方案，进一步规范IVD试剂医保支付。",
+      "published": "2026-05-04T16:00:00",
+      "source": "国家医保局"
+    }
+  ],
+  "hot_topics": [
+    {
+      "title": "多地2026中小学暑假时间出炉：上海和无锡7月1日最早放假，假期长达62天",
+      "link": "https://www.ablesci.com/tophot",
+      "summary": "多地2026中小学暑假时间出炉：上海和无锡7月1日最早放假，假期长达62天，比往年多出约一周。",
+      "published": "2026-05-14T08:00:00",
+      "source": "今日热点"
+    },
+    {
+      "title": "北京成全国首个存款突破30万亿元的城市",
+      "link": "https://www.ablesci.com/tophot",
+      "summary": "北京成全国首个存款突破30万亿元的城市，其中非金融企业存款占比最高，住户存款规模也超过7万亿元。",
+      "published": "2026-05-14T08:00:00",
+      "source": "今日热点"
+    },
+    {
+      "title": "4月汽车销量前十名仅剩一款燃油车",
+      "link": "https://www.ablesci.com/tophot",
+      "summary": "4月汽车销量前十名仅剩一款燃油车，麦肯锡报告称燃油车在中短期内不会快速退出中国市场历史舞台。",
+      "published": "2026-05-14T08:00:00",
+      "source": "今日热点"
+    },
+    {
+      "title": "特朗普13日晚抵京；英伟达CEO黄仁勋最后一刻登上空军一号陪同访华",
+      "link": "https://www.ablesci.com/tophot",
+      "summary": "美国总统特朗普13日晚抵京；英伟达CEO黄仁勋最后一刻登上空军一号陪同访华。",
+      "published": "2026-05-14T08:00:00",
+      "source": "今日热点"
+    },
+    {
+      "title": "我国科研团队成功研发气固电池，实现常温常压高效储氢",
+      "link": "https://www.ablesci.com/tophot",
+      "summary": "我国科研团队成功研发气固电池，实现常温常压高效储氢，破解储氢难题。",
+      "published": "2026-05-14T08:00:00",
+      "source": "今日热点"
+    },
+    {
+      "title": "广电总局：去年短视频、网络直播等收入4795.44亿元，同比增长11.28%",
+      "link": "https://www.ablesci.com/tophot",
+      "summary": "广电总局：去年短视频、网络直播等收入4795.44亿元，同比增长11.28%。",
+      "published": "2026-05-14T08:00:00",
+      "source": "今日热点"
+    },
+    {
+      "title": "腾讯宣布元宝支持一键总结微信群聊，定制个性化旅行方案",
+      "link": "https://www.ablesci.com/tophot",
+      "summary": "腾讯宣布：元宝支持一键总结微信群聊，可将发票报销信息生成表格、定制个性化旅行方案。",
+      "published": "2026-05-14T08:00:00",
+      "source": "今日热点"
+    },
+    {
+      "title": "中国空间站首次人类\"人工胚胎\"实验进展顺利",
+      "link": "https://www.ablesci.com/tophot",
+      "summary": "中国空间站首次人类\"人工胚胎\"实验进展顺利；月壤纤维样品进入中国空间站，将接受舱外环境长期验证。",
+      "published": "2026-05-14T08:00:00",
+      "source": "今日热点"
+    },
+    {
+      "title": "日本多地举行反战抗议，反对\"再军事化\"",
+      "link": "https://www.ablesci.com/tophot",
+      "summary": "日本多地举行反战抗议，反对\"再军事化\"，要求坚守和平主义、维护现行宪法，并呼吁首相高市辞职。",
+      "published": "2026-05-14T08:00:00",
+      "source": "今日热点"
+    },
+    {
+      "title": "三星电子与最大工会谈判破裂，5万员工将罢工18天",
+      "link": "https://www.ablesci.com/tophot",
+      "summary": "韩媒：三星电子与最大工会谈判破裂，5万员工将罢工18天，或导致超1800亿元损失，并殃及半导体产业。",
+      "published": "2026-05-14T08:00:00",
+      "source": "今日热点"
+    }
+  ],
+  "literature_sources": [
+    {
+      "title": "PubMed - 生物医学文献数据库",
+      "link": "https://pubmed.ncbi.nlm.nih.gov/",
+      "summary": "全球最大的生物医学文献数据库，涵盖MEDLINE、生命科学期刊和在线图书，是生物医学研究必备工具。",
+      "published": "2026-05-15T00:00:00",
+      "source": "PubMed"
+    },
+    {
+      "title": "Google Scholar 谷歌学术搜索",
+      "link": "https://scholar.google.com/",
+      "summary": "跨学科学术文献搜索引擎，涵盖期刊论文、学位论文、书籍、摘要和会议文章。",
+      "published": "2026-05-15T00:00:00",
+      "source": "Google Scholar"
+    },
+    {
+      "title": "Web of Science - 科学引文索引数据库",
+      "link": "https://www.webofscience.com/",
+      "summary": "多学科核心期刊引文索引数据库，提供高质量学术文献检索和引文分析。",
+      "published": "2026-05-15T00:00:00",
+      "source": "Web of Science"
+    },
+    {
+      "title": "中国知网 CNKI - 中国学术文献总库",
+      "link": "https://www.cnki.net/",
+      "summary": "中国最大学术文献资源库，涵盖期刊论文、博硕士论文、会议论文、报纸等。",
+      "published": "2026-05-15T00:00:00",
+      "source": "CNKI"
+    },
+    {
+      "title": "Semantic Scholar - AI学术搜索引擎",
+      "link": "https://www.semanticscholar.org/",
+      "summary": "基于人工智能的学术搜索引擎，提供文献推荐、影响力分析和可视化引用网络。",
+      "published": "2026-05-15T00:00:00",
+      "source": "Semantic Scholar"
+    },
+    {
+      "title": "ResearchGate - 科研社交网络平台",
+      "link": "https://www.researchgate.net/",
+      "summary": "科研人员社交网络平台，可分享论文、获取研究动态和与同行交流。",
+      "published": "2026-05-15T00:00:00",
+      "source": "ResearchGate"
+    }
+  ],
+  "ai_platforms": [
+    {
+      "title": "ChatGPT - OpenAI对话AI",
+      "link": "https://chat.openai.com/",
+      "summary": "OpenAI开发的对话式AI助手，支持文本生成、编程辅助、数据分析等。",
+      "published": "2026-05-15T00:00:00",
+      "source": "OpenAI"
+    },
+    {
+      "title": "Claude - Anthropic AI助手",
+      "link": "https://claude.ai/",
+      "summary": "Anthropic开发的AI助手，擅长长文本处理、分析推理和编程。",
+      "published": "2026-05-15T00:00:00",
+      "source": "Anthropic"
+    },
+    {
+      "title": "DeepSeek - 深度求索AI",
+      "link": "https://chat.deepseek.com/",
+      "summary": "深度求索开发的大语言模型，支持长文本、编程和数学推理。",
+      "published": "2026-05-15T00:00:00",
+      "source": "深度求索"
+    },
+    {
+      "title": "Kimi - 月之暗面AI助手",
+      "link": "https://kimi.moonshot.cn/",
+      "summary": "月之暗面开发的AI助手，支持超长上下文和文件分析。",
+      "published": "2026-05-15T00:00:00",
+      "source": "月之暗面"
+    },
+    {
+      "title": "Gemini - Google AI",
+      "link": "https://gemini.google.com/",
+      "summary": "Google开发的AI助手，支持多模态理解和推理。",
+      "published": "2026-05-15T00:00:00",
+      "source": "Google"
+    },
+    {
+      "title": "通义千问 - 阿里巴巴AI",
+      "link": "https://tongyi.aliyun.com/",
+      "summary": "阿里巴巴开发的大语言模型，支持文本生成、代码编写和数据分析。",
+      "published": "2026-05-15T00:00:00",
+      "source": "阿里巴巴"
+    },
+    {
+      "title": "文心一言 - 百度AI",
+      "link": "https://yiyan.baidu.com/",
+      "summary": "百度开发的大语言模型，集成搜索和理解能力。",
+      "published": "2026-05-15T00:00:00",
+      "source": "百度"
+    },
+    {
+      "title": "GitHub Copilot - AI编程助手",
+      "link": "https://github.com/features/copilot",
+      "summary": "GitHub和OpenAI联合开发的AI编程助手，支持多种编程语言。",
+      "published": "2026-05-15T00:00:00",
+      "source": "GitHub"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+Performing initial crawl...
+Starting crawl at 2026-05-14 16:43:53
+Crawling: Nature-医学研究
+  + Got 10 items from Nature-医学研究
+Crawling: ScienceDaily-医学
+Warning: No entries found for ScienceDaily-医学
+  - No data from ScienceDaily-医学, kept 12 existing items
+Crawling: 丁香园-最新资讯
+Warning: No entries found for 丁香园-最新资讯
+  - No data from 丁香园-最新资讯, kept 12 existing items
+Crawling: 生物谷新闻
+Warning: No entries found for 生物谷新闻
+  - No data from 生物谷新闻, kept 12 existing items
+Crawling: IVD资讯精选
+  + Loaded 12 curated items for IVD资讯精选
+  + Got 12 items from IVD资讯精选
+Crawling: EurekAlert-医学
+Warning: No entries found for EurekAlert-医学
+  - No data from EurekAlert-医学, kept 10 existing items
+Crawling: Nature-生物技术
+  + Got 10 items from Nature-生物技术
+Crawling: ScienceDaily-生物
+  + Got 10 items from ScienceDaily-生物
+Crawling: 生物医药资讯精选
+  + Loaded 10 curated items for 生物医药资讯精选
+  + Got 10 items from 生物医药资讯精选
+Crawling: Nature最新
+  + Got 10 items from Nature最新
+Crawling: Science新闻
+Warning: No entries found for Science新闻
+  - No data from Science新闻, kept 8 existing items
+Crawling: PLOS ONE
+  + Got 10 items from PLOS ONE
+Crawling: 学术资讯精选
+  + Loaded 8 curated items for 学术资讯精选
+  + Got 8 items from 学术资讯精选
+Crawling: EurekAlert-科学
+Warning: No entries found for EurekAlert-科学
+  - No data from EurekAlert-科学, kept 10 existing items
+Crawling: 药智网资讯
+Warning: No entries found for 药智网资讯
+  - No data from 药智网资讯, kept 10 existing items
+Crawling: 行业数据精选
+  + Loaded 10 curated items for 行业数据精选
+  + Got 10 items from 行业数据精选
+Crawling: 科研通-每日热点
+  + Got 15 hot topics from ablesci.com
+  + Got 15 items from 科研通-每日热点
+Crawling: 热点资讯精选
+  + Loaded 10 curated items for 热点资讯精选
+  + Got 10 items from 热点资讯精选
+Crawl completed at 2026-05-14 16:44:02
+Total news items: 189
+Scheduler started. Next crawl in 12 hours.
+==================================================
+IVD News Hub API Server
+==================================================
+Starting server on http://localhost:5000
+Open http://localhost:5000/static/index.html in your browser
+==================================================
+ * Serving Flask app 'app'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.104:5000
+Press CTRL+C to quit
