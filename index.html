@@ -217,6 +217,29 @@
 
             <!-- ===== 右侧栏 ===== -->
             <aside class="sidebar sidebar-right">
+                <!-- 每日一言（放大版）+ 能量打卡 -->
+                <div class="widget widget-quote widget-quote-hero">
+                    <div class="widget-header">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        <span>每日一言</span>
+                    </div>
+                    <div class="quote-body quote-body-hero">
+                        <p class="quote-text-hero">“{{ dailyQuote }}”</p>
+                    </div>
+                    <div class="energy-section">
+                        <button class="energy-btn" @click="punchEnergy" :disabled="isEnergyPunching">
+                            <span class="energy-emoji">🤝</span>
+                            <span class="energy-text">碰个拳 · 今日 <strong>{{ energyDisplay }}</strong> 人汲取能量</span>
+                        </button>
+                        <transition name="sparkle-fade">
+                            <div v-if="showSparkle" class="sparkle-container">
+                                <span v-for="n in 12" :key="n" class="sparkle-particle"
+                                    :style="sparkleStyle(n)"></span>
+                            </div>
+                        </transition>
+                    </div>
+                </div>
+
                 <!-- AI 今日辣评 -->
                 <div class="widget widget-ai-review">
                     <div class="widget-header">
@@ -229,14 +252,54 @@
                     </div>
                 </div>
 
-                <!-- 每日一言（放大版） -->
-                <div class="widget widget-quote widget-quote-hero">
+                <!-- 经典小品 -->
+                <div class="widget widget-retro-tv" id="retro-tv-widget">
                     <div class="widget-header">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                        <span>每日一言</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
+                        <span>经典小品 · 右下角可缩放</span>
                     </div>
-                    <div class="quote-body quote-body-hero">
-                        <p class="quote-text-hero">“{{ dailyQuote }}”</p>
+                    <div class="retro-tv">
+                        <div class="tv-body">
+                            <div class="tv-screen">
+                                <iframe
+                                    src="https://v.qq.com/txp/iframe/player.html?vid=v32315zayr9&autoplay=0"
+                                    allowfullscreen
+                                    loading="lazy">
+                                </iframe>
+                            </div>
+                            <div class="tv-controls">
+                                <span class="tv-knob"></span>
+                                <span class="tv-knob tv-knob-right"></span>
+                            </div>
+                            <div class="tv-legs">
+                                <span class="tv-leg"></span>
+                                <span class="tv-leg"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tv-fallback">
+                        如果无法播放，<a href="https://v.qq.com/x/cover/mzc001004qsqmkk/v32315zayr9.html" target="_blank" rel="noopener noreferrer">点此在腾讯视频观看</a>
+                    </div>
+                </div>
+
+                <!-- 白噪音 -->
+                <div class="widget widget-white-noise">
+                    <div class="widget-header">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/><path d="M12 2a15.3 15.3 0 0 0-4 10 15.3 15.3 0 0 0 4 10"/></svg>
+                        <span>白噪音 · 专注</span>
+                    </div>
+                    <div class="noise-body">
+                        <div class="noise-bubble-wrap">
+                            <div class="noise-bubble" :class="{ playing: !!activeNoise }"></div>
+                        </div>
+                        <div class="noise-buttons">
+                            <button v-for="n in noiseTypes" :key="n.key"
+                                @click="toggleNoise(n.key)"
+                                class="noise-btn"
+                                :class="{ active: activeNoise === n.key }">
+                                {{ n.label }}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </aside>
@@ -265,39 +328,6 @@
             </div>
         </transition>
 
-        <!-- ===== 底部：经典小品（可拖拽缩放） ===== -->
-        <div class="container bottom-section">
-            <div class="widget widget-retro-tv" id="retro-tv-widget">
-                <div class="tv-drag-handle">
-                    <div class="widget-header">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
-                        <span>经典小品 · 拖拽移动 | 右下角缩放</span>
-                    </div>
-                </div>
-                <div class="retro-tv">
-                    <div class="tv-body">
-                        <div class="tv-screen" id="tv-screen">
-                            <iframe
-                                src="https://player.bilibili.com/player.html?bvid=BV1LD421T727&as_wide=1&high_quality=1&danmaku=0"
-                                allowfullscreen
-                                loading="lazy">
-                            </iframe>
-                        </div>
-                        <div class="tv-controls">
-                            <span class="tv-knob"></span>
-                            <span class="tv-knob tv-knob-right"></span>
-                        </div>
-                        <div class="tv-legs">
-                            <span class="tv-leg"></span>
-                            <span class="tv-leg"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="tv-fallback">
-                    如果视频无法加载，<a href="https://www.bilibili.com/video/BV1LD421T727" target="_blank" rel="noopener noreferrer">点此在B站观看</a>
-                </div>
-            </div>
-        </div>
 
         <!-- 页脚 -->
         <footer class="footer">

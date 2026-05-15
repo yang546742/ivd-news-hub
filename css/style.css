@@ -918,37 +918,13 @@ a {
     100% { transform: scale(1.25); }
 }
 
-/* ==================== 底部经典小品 ==================== */
-
-.bottom-section {
-    padding: 0 24px 24px;
-}
+/* ==================== 经典小品（右侧栏） ==================== */
 
 .widget-retro-tv {
-    padding: 12px 12px 16px;
-    resize: both;
+    padding: 10px 10px 14px;
     overflow: hidden;
-    min-width: 280px;
-    min-height: 200px;
-    max-width: 560px;
     cursor: default;
     position: relative;
-}
-
-.tv-drag-handle {
-    cursor: grab;
-    user-select: none;
-    padding: 2px 0;
-    border-radius: 4px;
-    transition: background 0.2s;
-}
-
-.tv-drag-handle:active {
-    cursor: grabbing;
-}
-
-.tv-drag-handle:hover {
-    background: rgba(0,0,0,0.02);
 }
 
 .widget-retro-tv .widget-header svg {
@@ -965,6 +941,10 @@ a {
 .tv-fallback a {
     color: #2563eb;
     text-decoration: underline;
+}
+
+.tv-fallback a:hover {
+    color: #1d4ed8;
 }
 
 .tv-fallback a:hover {
@@ -1137,6 +1117,274 @@ a {
     font-weight: 600;
     color: var(--text-secondary);
     font-size: 13px;
+}
+
+/* ==================== 能量打卡 ==================== */
+
+.energy-section {
+    position: relative;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+.energy-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: rgba(251, 191, 36, 0.12);
+    border: 1px solid rgba(251, 191, 36, 0.25);
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    color: #92400e;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.energy-btn:hover:not(:disabled) {
+    background: rgba(251, 191, 36, 0.22);
+    border-color: rgba(251, 191, 36, 0.4);
+    transform: translateY(-1px);
+}
+
+.energy-btn:active {
+    transform: scale(0.97);
+}
+
+.energy-btn:disabled {
+    opacity: 0.7;
+    cursor: default;
+}
+
+.energy-emoji {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.energy-btn:hover .energy-emoji {
+    transform: scale(1.2);
+}
+
+.energy-text {
+    line-height: 1.4;
+}
+
+.energy-text strong {
+    font-weight: 700;
+    color: #b45309;
+}
+
+/* ==================== 火花粒子动效 ==================== */
+
+.sparkle-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.sparkle-particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #f59e0b;
+    box-shadow: 0 0 6px #fbbf24;
+    animation: sparkle-fly 0.8s ease-out forwards;
+}
+
+@keyframes sparkle-fly {
+    0% { opacity: 1; transform: translate(0, 0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
+}
+
+.sparkle-fade-enter-active { animation: sparkle-pop 0.2s ease-out; }
+.sparkle-fade-leave-active { transition: opacity 0.3s ease; }
+.sparkle-fade-leave-to { opacity: 0; }
+
+@keyframes sparkle-pop {
+    0% { opacity: 0; transform: scale(0.5); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* ==================== 白噪音 ==================== */
+
+.widget-white-noise {
+    border-left: 3px solid #06b6d4;
+}
+
+.noise-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.noise-bubble-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 8px 0;
+}
+
+.noise-bubble {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #e0f2fe, #bae6fd);
+    box-shadow: 0 2px 12px rgba(6, 182, 212, 0.15);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.noise-bubble::after {
+    content: '🎧';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+}
+
+.noise-bubble.playing {
+    animation: bubble-breathe 3s ease-in-out infinite;
+    background: radial-gradient(circle at 35% 35%, #a5f3fc, #22d3ee);
+    box-shadow: 0 2px 20px rgba(6, 182, 212, 0.3);
+}
+
+@keyframes bubble-breathe {
+    0%, 100% { transform: scale(1); box-shadow: 0 2px 12px rgba(6, 182, 212, 0.15); }
+    50% { transform: scale(1.15); box-shadow: 0 4px 28px rgba(6, 182, 212, 0.25); }
+}
+
+.noise-buttons {
+    display: flex;
+    gap: 4px;
+    width: 100%;
+}
+
+.noise-btn {
+    flex: 1;
+    padding: 4px 6px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-align: center;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.noise-btn:hover {
+    border-color: var(--text-muted);
+    color: var(--text-primary);
+}
+
+.noise-btn.active {
+    background: #06b6d4;
+    border-color: #06b6d4;
+    color: white;
+    font-weight: 600;
+}
+
+/* ==================== 骰子旋转动画 ==================== */
+
+.dice-btn .dice-icon {
+    display: inline-block;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dice-btn.spinning .dice-icon {
+    animation: dice-spin 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 2;
+}
+
+@keyframes dice-spin {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(360deg) scale(1.2); }
+    100% { transform: rotate(720deg) scale(1); }
+}
+
+/* ==================== 热词云增强 - 错落排版 ==================== */
+
+.word-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 7px;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 0;
+    line-height: 1.8;
+}
+
+.word-tag {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    transition: all 0.25s ease;
+    letter-spacing: 0.01em;
+    line-height: 1.6;
+    border: 1px solid transparent;
+}
+
+.word-tag:hover {
+    transform: translateY(-2px) scale(1.05);
+    filter: brightness(1.2);
+    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+    border-color: currentColor;
+}
+
+/* ==================== 卡片微光边框 ==================== */
+
+.widget-quote-hero {
+    position: relative;
+}
+
+.widget-quote-hero::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: var(--radius);
+    border: 1px solid rgba(251, 191, 36, 0.12);
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.widget-quote-hero:hover::before {
+    opacity: 1;
+    box-shadow: 0 0 16px rgba(251, 191, 36, 0.08);
+}
+
+.widget-ai-review {
+    position: relative;
+}
+
+.widget-ai-review::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: var(--radius);
+    border: 1px solid rgba(139, 92, 246, 0.08);
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.widget-ai-review:hover::before {
+    opacity: 1;
+    box-shadow: 0 0 14px rgba(139, 92, 246, 0.06);
 }
 
 /* ==================== 页脚 ==================== */

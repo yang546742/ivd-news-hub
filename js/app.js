@@ -190,6 +190,19 @@ const app = createApp({
             // AI 辣评
             aiHotReview: '',
 
+            // 能量打卡
+            energyCount: 0,
+            isEnergyPunching: false,
+            showSparkle: false,
+
+            // 白噪音
+            activeNoise: '',
+            noiseTypes: [
+                { key: 'rain', label: '🌧️ 雨声' },
+                { key: 'forest', label: '🌲 森林' },
+                { key: 'campfire', label: '🔥 篝火' },
+            ],
+
             // 分类配置
             categories: [
                 { key: 'hot_topics', name: '🔥 热点平台' },
@@ -220,6 +233,12 @@ const app = createApp({
     },
 
     computed: {
+        // 能量计数（模拟集体感）
+        energyDisplay() {
+            const base = 1124;
+            return (base + this.energyCount).toLocaleString();
+        },
+
         // 每日金句
         dailyQuote() {
             const today = new Date();
@@ -369,12 +388,17 @@ const app = createApp({
             if (this.allNewsFlat.length === 0) return;
             this.isRandoming = true;
 
-            // 小延迟增加仪式感
+            // 骰子旋转动画
+            const btn = document.querySelector('.dice-btn');
+            if (btn) btn.classList.add('spinning');
+
+            const delay = 650;
             setTimeout(() => {
                 const idx = Math.floor(Math.random() * this.allNewsFlat.length);
                 this.randomResult = this.allNewsFlat[idx];
                 this.isRandoming = false;
-            }, 300);
+                if (btn) btn.classList.remove('spinning');
+            }, delay);
         },
 
         closeRandom() {
@@ -472,48 +496,122 @@ const app = createApp({
     },
 
     mounted() {
+        // 读取本地能量计数
+        try {
+            const saved = localStorage.getItem('ivd_energy');
+            if (saved) this.energyCount = parseInt(saved, 10);
+        } catch(e) {}
         this.init();
-        this.$nextTick(() => this.initTvDrag());
     },
 
-    // ---------- 复古电视拖拽 ----------
-    initTvDrag() {
-        const widget = document.getElementById('retro-tv-widget');
-        const handle = widget?.querySelector('.tv-drag-handle');
-        if (!widget || !handle) return;
+    // ---------- 能量打卡 ----------
+    punchEnergy() {
+        if (this.isEnergyPunching) return;
+        this.isEnergyPunching = true;
+        this.energyCount++;
+        this.showSparkle = true;
+        try { localStorage.setItem('ivd_energy', this.energyCount); } catch(e) {}
+        setTimeout(() => { this.showSparkle = false; }, 700);
+        setTimeout(() => { this.isEnergyPunching = false; }, 300);
+    },
 
-        let isDragging = false, startX, startY, origX, origY;
+    // 火花粒子样式
+    sparkleStyle(n) {
+        const angle = (n / 12) * 360;
+        const dist = 30 + Math.random() * 40;
+        const colors = ['#f59e0b', '#fbbf24', '#fcd34d', '#fde68a'];
+        const size = 3 + Math.random() * 4;
+        return {
+            '--tx': `${Math.cos(angle * Math.PI / 180) * dist}px`,
+            '--ty': `${Math.sin(angle * Math.PI / 180) * dist}px`,
+            background: colors[n % 4],
+            width: `${size}px`,
+            height: `${size}px`,
+        };
+    },
 
-        handle.addEventListener('mousedown', (e) => {
-            if (e.target.tagName === 'IFRAME') return;
-            isDragging = true;
-            const rect = widget.getBoundingClientRect();
-            startX = e.clientX;
-            startY = e.clientY;
-            origX = rect.left;
-            origY = rect.top;
-            widget.style.position = 'fixed';
-            widget.style.left = origX + 'px';
-            widget.style.top = origY + 'px';
-            widget.style.zIndex = 200;
-            widget.style.margin = '0';
-            widget.style.width = rect.width + 'px';
-            widget.style.maxWidth = '560px';
-            document.body.appendChild(widget);
+    // ---------- 白噪音 ----------
+    toggleNoise(type) {
+        if (this.activeNoise === type) {
+            this.stopNoise();
+            return;
+        }
+        this.startNoise(type);
+    },
 
-            const onMove = (ev) => {
-                if (!isDragging) return;
-                widget.style.left = (origX + ev.clientX - startX) + 'px';
-                widget.style.top = (origY + ev.clientY - startY) + 'px';
-            };
-            const onUp = () => {
-                isDragging = false;
-                document.removeEventListener('mousemove', onMove);
-                document.removeEventListener('mouseup', onUp);
-            };
-            document.addEventListener('mousemove', onMove);
-            document.addEventListener('mouseup', onUp);
-        });
+    startNoise(type) {
+        this.stopNoise();
+
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            this._noiseCtx = ctx;
+
+            const bufferSize = ctx.sampleRate * 2;
+            const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            const data = buffer.getChannelData(0);
+
+            // 生成不同类型噪音
+            for (let i = 0; i < bufferSize; i++) {
+                if (type === 'rain') {
+                    // 白噪音 + 低频滤波 = 雨声
+                    data[i] = (Math.random() * 2 - 1) * 0.4;
+                } else if (type === 'forest') {
+                    // 布朗噪音 = 更暖的声音
+                    data[i] = (Math.random() * 2 - 1) * 0.3;
+                    if (i > 0) data[i] += data[i - 1] * 0.7;
+                    data[i] *= 0.15;
+                } else {
+                    // 篝火 = 带爆裂声的噪音
+                    data[i] = (Math.random() * 2 - 1) * 0.5;
+                    if (i % 200 < 2) data[i] *= 3; // 模拟火星爆裂
+                }
+            }
+
+            const source = ctx.createBufferSource();
+            source.buffer = buffer;
+            source.loop = true;
+
+            // 不同类型使用不同滤波器
+            if (type === 'rain') {
+                const lp = ctx.createBiquadFilter();
+                lp.type = 'lowpass';
+                lp.frequency.value = 800;
+                source.connect(lp);
+                lp.connect(ctx.destination);
+            } else if (type === 'forest') {
+                const hp = ctx.createBiquadFilter();
+                hp.type = 'highpass';
+                hp.frequency.value = 100;
+                const lp = ctx.createBiquadFilter();
+                lp.type = 'lowpass';
+                lp.frequency.value = 1000;
+                source.connect(hp);
+                hp.connect(lp);
+                lp.connect(ctx.destination);
+            } else {
+                const bp = ctx.createBiquadFilter();
+                bp.type = 'bandpass';
+                bp.frequency.value = 500;
+                bp.Q.value = 0.5;
+                source.connect(bp);
+                bp.connect(ctx.destination);
+            }
+
+            source.start();
+            this._noiseSource = source;
+            this.activeNoise = type;
+        } catch(e) {
+            console.warn('白噪音播放失败:', e);
+            this.activeNoise = '';
+        }
+    },
+
+    stopNoise() {
+        try {
+            if (this._noiseSource) { this._noiseSource.stop(); this._noiseSource = null; }
+            if (this._noiseCtx) { this._noiseCtx.close(); this._noiseCtx = null; }
+        } catch(e) {}
+        this.activeNoise = '';
     },
 });
 
