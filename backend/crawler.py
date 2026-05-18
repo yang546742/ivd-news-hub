@@ -243,6 +243,7 @@ class NewsCrawler:
             'industry_data': self._crawl_category('industry_data', old_news),
             'literature_sources': self._crawl_category('literature_sources', old_news),
             'ai_platforms': self._crawl_category('ai_platforms', old_news),
+            'global_news': self._crawl_category('global_news', old_news),
             'hot_topics': self._crawl_category('hot_topics', old_news),
             'last_update': datetime.utcnow().isoformat() + 'Z'
         }

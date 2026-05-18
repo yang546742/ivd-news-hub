@@ -115,6 +115,32 @@ SOURCES = {
             'url': '#'
         },
     ],
+    'global_news': [
+        {
+            'name': '虎嗅-科技商业',
+            'type': 'rss',
+            'rss': 'https://www.huxiu.com/rss/0.xml',
+            'url': 'https://www.huxiu.com'
+        },
+        {
+            'name': '机器之心-AI',
+            'type': 'rss',
+            'rss': 'https://www.jiqizhixin.com/rss',
+            'url': 'https://www.jiqizhixin.com'
+        },
+        {
+            'name': '36氪-科技新闻',
+            'type': 'rss',
+            'rss': 'https://36kr.com/feed',
+            'url': 'https://36kr.com'
+        },
+        {
+            'name': 'Solidot-科技',
+            'type': 'rss',
+            'rss': 'https://www.solidot.org/index.rss',
+            'url': 'https://www.solidot.org'
+        },
+    ],
     'hot_topics': [
         {
             'name': '科研通-每日热点',
