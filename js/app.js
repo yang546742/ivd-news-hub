@@ -52,12 +52,12 @@ const FORTUNES = [
     '桃花旺盛，情感升温', '财运亨通，正偏皆宜', '健康优先，劳逸结合',
 ];
 
-const LUCK_EMOJIS = ['😰', '😌', '🙂', '😊', '😄', '🥳'];
+// 当日天数（模块级，避免重复计算）
+const __today = new Date();
+const __start = new Date(__today.getFullYear(), 0, 0);
+const DAY_OF_YEAR = Math.floor((__today - __start) / (1000 * 60 * 60 * 24));
 
-function generateZodiac(idx) {
-    const today = new Date();
-    const start = new Date(today.getFullYear(), 0, 0);
-    const dayOfYear = Math.floor((today - start) / (1000 * 60 * 60 * 24));
+function generateZodiac(idx, dayOfYear) {
     const seed = dayOfYear * 7 + idx * 13;
     const rand = (n) => Math.abs(Math.sin(seed * (n + 1))) * 100 % 100 / 100;
     const luck = Math.floor(rand(1) * 5) + 1;
@@ -273,16 +273,12 @@ const app = createApp({
     computed: {
         // 每日金句
         dailyQuote() {
-            const today = new Date();
-            const start = new Date(today.getFullYear(), 0, 0);
-            const diff = today - start;
-            const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
-            return QUOTES[dayOfYear % QUOTES.length];
+            return QUOTES[DAY_OF_YEAR % QUOTES.length];
         },
 
         // 今日星座运势
         zodiac() {
-            return ZODIAC.map((_, i) => generateZodiac(i));
+            return ZODIAC.map((_, i) => generateZodiac(i, DAY_OF_YEAR));
         },
 
         // 随机翻牌 accent 颜色
@@ -530,10 +526,75 @@ const app = createApp({
         sourceAccent(source) {
             return hashColor(source);
         },
-    },
 
-    mounted() {
-        this.init();
+        // ---------- 星座运势 ----------
+        zodiacStyle(luck) {
+            const colors = ['#ef4444','#f97316','#eab308','#22c55e','#06b6d4','#8b5cf6'];
+            return { '--zodiac-accent': colors[luck] || '#eab308' };
+        },
+
+        starString(luck) {
+            return '★'.repeat(luck) + '☆'.repeat(5 - luck);
+        },
+
+        // ---------- 白噪音 ----------
+        toggleNoise(type) {
+            if (this.activeNoise === type) { this.stopNoise(); return; }
+            this.startNoise(type);
+        },
+
+        startNoise(type) {
+            this.stopNoise();
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                this._noiseCtx = ctx;
+                const bufferSize = ctx.sampleRate * 2;
+                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    if (type === 'rain') data[i] = (Math.random() * 2 - 1) * 0.4;
+                    else if (type === 'forest') {
+                        data[i] = (Math.random() * 2 - 1) * 0.3;
+                        if (i > 0) data[i] += data[i - 1] * 0.7;
+                        data[i] *= 0.15;
+                    } else {
+                        data[i] = (Math.random() * 2 - 1) * 0.5;
+                        if (i % 200 < 2) data[i] *= 3;
+                    }
+                }
+                const source = ctx.createBufferSource();
+                source.buffer = buffer; source.loop = true;
+                if (type === 'rain') {
+                    const lp = ctx.createBiquadFilter();
+                    lp.type = 'lowpass'; lp.frequency.value = 800;
+                    source.connect(lp); lp.connect(ctx.destination);
+                } else if (type === 'forest') {
+                    const hp = ctx.createBiquadFilter();
+                    hp.type = 'highpass'; hp.frequency.value = 100;
+                    const lp = ctx.createBiquadFilter();
+                    lp.type = 'lowpass'; lp.frequency.value = 1000;
+                    source.connect(hp); hp.connect(lp); lp.connect(ctx.destination);
+                } else {
+                    const bp = ctx.createBiquadFilter();
+                    bp.type = 'bandpass'; bp.frequency.value = 500; bp.Q.value = 0.5;
+                    source.connect(bp); bp.connect(ctx.destination);
+                }
+                source.start();
+                this._noiseSource = source;
+                this.activeNoise = type;
+            } catch(e) {
+                console.warn('白噪音播放失败:', e);
+                this.activeNoise = '';
+            }
+        },
+
+        stopNoise() {
+            try {
+                if (this._noiseSource) { this._noiseSource.stop(); this._noiseSource = null; }
+                if (this._noiseCtx) { this._noiseCtx.close(); this._noiseCtx = null; }
+            } catch(e) {}
+            this.activeNoise = '';
+        },
     },
 
     // ---------- 星座运势 ----------
@@ -566,20 +627,16 @@ const app = createApp({
             const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
             const data = buffer.getChannelData(0);
 
-            // 生成不同类型噪音
             for (let i = 0; i < bufferSize; i++) {
                 if (type === 'rain') {
-                    // 白噪音 + 低频滤波 = 雨声
                     data[i] = (Math.random() * 2 - 1) * 0.4;
                 } else if (type === 'forest') {
-                    // 布朗噪音 = 更暖的声音
                     data[i] = (Math.random() * 2 - 1) * 0.3;
                     if (i > 0) data[i] += data[i - 1] * 0.7;
                     data[i] *= 0.15;
                 } else {
-                    // 篝火 = 带爆裂声的噪音
                     data[i] = (Math.random() * 2 - 1) * 0.5;
-                    if (i % 200 < 2) data[i] *= 3; // 模拟火星爆裂
+                    if (i % 200 < 2) data[i] *= 3;
                 }
             }
 
@@ -587,7 +644,6 @@ const app = createApp({
             source.buffer = buffer;
             source.loop = true;
 
-            // 不同类型使用不同滤波器
             if (type === 'rain') {
                 const lp = ctx.createBiquadFilter();
                 lp.type = 'lowpass';
@@ -628,6 +684,10 @@ const app = createApp({
             if (this._noiseCtx) { this._noiseCtx.close(); this._noiseCtx = null; }
         } catch(e) {}
         this.activeNoise = '';
+    },
+
+    mounted() {
+        this.init();
     },
 });
 

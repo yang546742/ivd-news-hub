@@ -230,10 +230,10 @@
                         <span>✨ 今日星座运势</span>
                     </div>
                     <div class="zodiac-grid">
-                        <div v-for="(sign, i) in zodiac" :key="i" class="zodiac-item" :style="zodiacStyle(sign.luck)">
+                        <div v-for="(sign, i) in zodiac" :key="sign.name" class="zodiac-item" :style="zodiacStyle(sign.luck)">
                             <span class="zodiac-emoji">{{ sign.emoji }}</span>
                             <span class="zodiac-name">{{ sign.name }}</span>
-                            <span class="zodiac-stars" v-html="starString(sign.luck)"></span>
+                            <span class="zodiac-stars">{{ starString(sign.luck) }}</span>
                             <span class="zodiac-text">{{ sign.fortune }}</span>
                         </div>
                     </div>
