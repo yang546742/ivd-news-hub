@@ -44,6 +44,12 @@
             </div>
         </nav>
 
+        <!-- 每日一言横幅 -->
+        <div class="quote-banner">
+            <span class="quote-banner-icon">💬</span>
+            <span class="quote-banner-text">“{{ dailyQuote }}”</span>
+        </div>
+
         <!-- 三栏内容布局 -->
         <div class="container main-layout">
 
@@ -217,26 +223,19 @@
 
             <!-- ===== 右侧栏 ===== -->
             <aside class="sidebar sidebar-right">
-                <!-- 每日一言（放大版）+ 能量打卡 -->
-                <div class="widget widget-quote widget-quote-hero">
+                <!-- 今日星座运势 -->
+                <div class="widget widget-zodiac">
                     <div class="widget-header">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                        <span>每日一言</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"/><path d="M12 2a15.3 15.3 0 0 0-4 10 15.3 15.3 0 0 0 4 10"/></svg>
+                        <span>✨ 今日星座运势</span>
                     </div>
-                    <div class="quote-body quote-body-hero">
-                        <p class="quote-text-hero">“{{ dailyQuote }}”</p>
-                    </div>
-                    <div class="energy-section">
-                        <button class="energy-btn" @click="punchEnergy" :disabled="isEnergyPunching">
-                            <span class="energy-emoji">🤝</span>
-                            <span class="energy-text">碰个拳 · 今日 <strong>{{ energyDisplay }}</strong> 人汲取能量</span>
-                        </button>
-                        <transition name="sparkle-fade">
-                            <div v-if="showSparkle" class="sparkle-container">
-                                <span v-for="n in 12" :key="n" class="sparkle-particle"
-                                    :style="sparkleStyle(n)"></span>
-                            </div>
-                        </transition>
+                    <div class="zodiac-grid">
+                        <div v-for="(sign, i) in zodiac" :key="i" class="zodiac-item" :style="zodiacStyle(sign.luck)">
+                            <span class="zodiac-emoji">{{ sign.emoji }}</span>
+                            <span class="zodiac-name">{{ sign.name }}</span>
+                            <span class="zodiac-stars" v-html="starString(sign.luck)"></span>
+                            <span class="zodiac-text">{{ sign.fortune }}</span>
+                        </div>
                     </div>
                 </div>
 

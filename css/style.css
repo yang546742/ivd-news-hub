@@ -158,6 +158,35 @@ a {
     to { transform: rotate(360deg); }
 }
 
+/* ==================== 每日一言横幅 ==================== */
+
+.quote-banner {
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fff8e7 100%);
+    border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+    padding: 8px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13.5px;
+    color: #92400e;
+    font-style: italic;
+    letter-spacing: 0.02em;
+}
+
+.quote-banner-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.quote-banner-text {
+    max-width: 600px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /* ==================== 三栏布局 ==================== */
 
 .main-layout {
@@ -297,53 +326,66 @@ a {
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
-/* ==================== 每日一言 ==================== */
+/* ==================== 今日星座运势 ==================== */
 
-.widget-quote {
+.widget-zodiac {
     background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(255,255,255,0.7));
-    border-left: 3px solid #f59e0b;
+    border-left: 3px solid #8b5cf6;
 }
 
-.widget-quote-hero {
-    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fef9c3 100%);
-    border-left: 3px solid #f59e0b;
-    position: relative;
-    overflow: hidden;
+.zodiac-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-top: 4px;
 }
 
-.widget-quote-hero::after {
-    content: '💫';
-    position: absolute;
-    right: 8px;
-    bottom: 4px;
-    font-size: 32px;
-    opacity: 0.12;
-    pointer-events: none;
+.zodiac-item {
+    background: rgba(139, 92, 246, 0.05);
+    border-radius: 8px;
+    padding: 8px 6px;
+    text-align: center;
+    border-left: 2px solid var(--zodiac-accent, #eab308);
+    transition: all 0.2s ease;
+    cursor: default;
 }
 
-.quote-body {
-    padding: 2px 0;
+.zodiac-item:hover {
+    background: rgba(139, 92, 246, 0.1);
+    transform: translateY(-1px);
 }
 
-.quote-body-hero {
-    padding: 6px 0;
+.zodiac-emoji {
+    font-size: 20px;
+    display: block;
+    line-height: 1.2;
 }
 
-.quote-text {
-    font-size: 13px;
-    font-style: italic;
-    line-height: 1.7;
+.zodiac-name {
+    font-size: 11px;
+    font-weight: 600;
     color: var(--text-primary);
-    font-weight: 400;
+    display: block;
+    margin-top: 2px;
 }
 
-.quote-text-hero {
-    font-size: 17px;
-    font-style: italic;
-    line-height: 1.7;
-    color: #92400e;
-    font-weight: 500;
-    letter-spacing: 0.01em;
+.zodiac-stars {
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-top: 1px;
+    color: var(--zodiac-accent, #eab308);
+}
+
+.zodiac-text {
+    font-size: 10px;
+    color: var(--text-secondary);
+    display: block;
+    margin-top: 3px;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 /* ==================== AI 辣评 ==================== */
@@ -1119,103 +1161,6 @@ a {
     font-size: 13px;
 }
 
-/* ==================== 能量打卡 ==================== */
-
-.energy-section {
-    position: relative;
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid rgba(251, 191, 36, 0.2);
-}
-
-.energy-btn {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 8px 12px;
-    background: rgba(251, 191, 36, 0.12);
-    border: 1px solid rgba(251, 191, 36, 0.25);
-    border-radius: 10px;
-    cursor: pointer;
-    font-family: var(--font-sans);
-    font-size: 12px;
-    color: #92400e;
-    transition: all 0.25s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.energy-btn:hover:not(:disabled) {
-    background: rgba(251, 191, 36, 0.22);
-    border-color: rgba(251, 191, 36, 0.4);
-    transform: translateY(-1px);
-}
-
-.energy-btn:active {
-    transform: scale(0.97);
-}
-
-.energy-btn:disabled {
-    opacity: 0.7;
-    cursor: default;
-}
-
-.energy-emoji {
-    font-size: 18px;
-    transition: transform 0.3s ease;
-}
-
-.energy-btn:hover .energy-emoji {
-    transform: scale(1.2);
-}
-
-.energy-text {
-    line-height: 1.4;
-}
-
-.energy-text strong {
-    font-weight: 700;
-    color: #b45309;
-}
-
-/* ==================== 火花粒子动效 ==================== */
-
-.sparkle-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    pointer-events: none;
-    z-index: 10;
-}
-
-.sparkle-particle {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #f59e0b;
-    box-shadow: 0 0 6px #fbbf24;
-    animation: sparkle-fly 0.8s ease-out forwards;
-}
-
-@keyframes sparkle-fly {
-    0% { opacity: 1; transform: translate(0, 0) scale(1); }
-    100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
-}
-
-.sparkle-fade-enter-active { animation: sparkle-pop 0.2s ease-out; }
-.sparkle-fade-leave-active { transition: opacity 0.3s ease; }
-.sparkle-fade-leave-to { opacity: 0; }
-
-@keyframes sparkle-pop {
-    0% { opacity: 0; transform: scale(0.5); }
-    100% { opacity: 1; transform: scale(1); }
-}
-
 /* ==================== 白噪音 ==================== */
 
 .widget-white-noise {
@@ -1347,27 +1292,6 @@ a {
     filter: brightness(1.2);
     box-shadow: 0 3px 12px rgba(0,0,0,0.1);
     border-color: currentColor;
-}
-
-/* ==================== 卡片微光边框 ==================== */
-
-.widget-quote-hero {
-    position: relative;
-}
-
-.widget-quote-hero::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: var(--radius);
-    border: 1px solid rgba(251, 191, 36, 0.12);
-    pointer-events: none;
-    transition: opacity 0.3s;
-}
-
-.widget-quote-hero:hover::before {
-    opacity: 1;
-    box-shadow: 0 0 16px rgba(251, 191, 36, 0.08);
 }
 
 .widget-ai-review {

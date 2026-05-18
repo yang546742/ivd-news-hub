@@ -29,6 +29,49 @@ const QUOTES = [
     "心中有丘壑，眉目作山河。",
 ];
 
+// ==================== 十二星座数据 ====================
+const ZODIAC = [
+    { name: '白羊座', eng: 'Aries', emoji: '♈', date: '3.21-4.19' },
+    { name: '金牛座', eng: 'Taurus', emoji: '♉', date: '4.20-5.20' },
+    { name: '双子座', eng: 'Gemini', emoji: '♊', date: '5.21-6.21' },
+    { name: '巨蟹座', eng: 'Cancer', emoji: '♋', date: '6.22-7.22' },
+    { name: '狮子座', eng: 'Leo', emoji: '♌', date: '7.23-8.22' },
+    { name: '处女座', eng: 'Virgo', emoji: '♍', date: '8.23-9.22' },
+    { name: '天秤座', eng: 'Libra', emoji: '♎', date: '9.23-10.23' },
+    { name: '天蝎座', eng: 'Scorpio', emoji: '♏', date: '10.24-11.22' },
+    { name: '射手座', eng: 'Sagittarius', emoji: '♐', date: '11.23-12.21' },
+    { name: '摩羯座', eng: 'Capricorn', emoji: '♑', date: '12.22-1.19' },
+    { name: '水瓶座', eng: 'Aquarius', emoji: '♒', date: '1.20-2.18' },
+    { name: '双鱼座', eng: 'Pisces', emoji: '♓', date: '2.19-3.20' },
+];
+
+const FORTUNES = [
+    '机遇涌动，大胆把握', '稳中求进，不宜冒进', '贵人相助，事半功倍',
+    '心平气和，顺其自然', '思维活跃，创意无限', '人际关系佳，合作顺利',
+    '专注当下，必有收获', '小有波折，终将化解', '宜静不宜动，韬光养晦',
+    '桃花旺盛，情感升温', '财运亨通，正偏皆宜', '健康优先，劳逸结合',
+];
+
+const LUCK_EMOJIS = ['😰', '😌', '🙂', '😊', '😄', '🥳'];
+
+function generateZodiac(idx) {
+    const today = new Date();
+    const start = new Date(today.getFullYear(), 0, 0);
+    const dayOfYear = Math.floor((today - start) / (1000 * 60 * 60 * 24));
+    const seed = dayOfYear * 7 + idx * 13;
+    const rand = (n) => Math.abs(Math.sin(seed * (n + 1))) * 100 % 100 / 100;
+    const luck = Math.floor(rand(1) * 5) + 1;
+    const fi = Math.floor(rand(2) * FORTUNES.length);
+    const sign = ZODIAC[idx];
+    return {
+        name: sign.name,
+        emoji: sign.emoji,
+        luck,
+        fortune: FORTUNES[fi],
+        date: sign.date,
+    };
+}
+
 // ==================== AI 辣评模板 ====================
 const AI_REVIEW_TEMPLATES = [
     (items) => {
@@ -190,11 +233,6 @@ const app = createApp({
             // AI 辣评
             aiHotReview: '',
 
-            // 能量打卡
-            energyCount: 0,
-            isEnergyPunching: false,
-            showSparkle: false,
-
             // 白噪音
             activeNoise: '',
             noiseTypes: [
@@ -233,12 +271,6 @@ const app = createApp({
     },
 
     computed: {
-        // 能量计数（模拟集体感）
-        energyDisplay() {
-            const base = 1124;
-            return (base + this.energyCount).toLocaleString();
-        },
-
         // 每日金句
         dailyQuote() {
             const today = new Date();
@@ -246,6 +278,11 @@ const app = createApp({
             const diff = today - start;
             const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
             return QUOTES[dayOfYear % QUOTES.length];
+        },
+
+        // 今日星座运势
+        zodiac() {
+            return ZODIAC.map((_, i) => generateZodiac(i));
         },
 
         // 随机翻牌 accent 颜色
@@ -496,38 +533,17 @@ const app = createApp({
     },
 
     mounted() {
-        // 读取本地能量计数
-        try {
-            const saved = localStorage.getItem('ivd_energy');
-            if (saved) this.energyCount = parseInt(saved, 10);
-        } catch(e) {}
         this.init();
     },
 
-    // ---------- 能量打卡 ----------
-    punchEnergy() {
-        if (this.isEnergyPunching) return;
-        this.isEnergyPunching = true;
-        this.energyCount++;
-        this.showSparkle = true;
-        try { localStorage.setItem('ivd_energy', this.energyCount); } catch(e) {}
-        setTimeout(() => { this.showSparkle = false; }, 700);
-        setTimeout(() => { this.isEnergyPunching = false; }, 300);
+    // ---------- 星座运势 ----------
+    zodiacStyle(luck) {
+        const colors = ['#ef4444','#f97316','#eab308','#22c55e','#06b6d4','#8b5cf6'];
+        return { '--zodiac-accent': colors[luck] || '#eab308' };
     },
 
-    // 火花粒子样式
-    sparkleStyle(n) {
-        const angle = (n / 12) * 360;
-        const dist = 30 + Math.random() * 40;
-        const colors = ['#f59e0b', '#fbbf24', '#fcd34d', '#fde68a'];
-        const size = 3 + Math.random() * 4;
-        return {
-            '--tx': `${Math.cos(angle * Math.PI / 180) * dist}px`,
-            '--ty': `${Math.sin(angle * Math.PI / 180) * dist}px`,
-            background: colors[n % 4],
-            width: `${size}px`,
-            height: `${size}px`,
-        };
+    starString(luck) {
+        return '★'.repeat(luck) + '☆'.repeat(5 - luck);
     },
 
     // ---------- 白噪音 ----------
