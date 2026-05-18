@@ -419,6 +419,13 @@
       "source": "Anthropic"
     },
     {
+      "title": "Gemini - Google AI",
+      "link": "https://gemini.google.com/",
+      "summary": "Google开发的AI助手，支持多模态理解和推理。",
+      "published": "2026-05-15T00:00:00",
+      "source": "Google"
+    },
+    {
       "title": "DeepSeek - 深度求索AI",
       "link": "https://chat.deepseek.com/",
       "summary": "深度求索开发的大语言模型，支持长文本、编程和数学推理。",
@@ -431,13 +438,6 @@
       "summary": "月之暗面开发的AI助手，支持超长上下文和文件分析。",
       "published": "2026-05-15T00:00:00",
       "source": "月之暗面"
-    },
-    {
-      "title": "Gemini - Google AI",
-      "link": "https://gemini.google.com/",
-      "summary": "Google开发的AI助手，支持多模态理解和推理。",
-      "published": "2026-05-15T00:00:00",
-      "source": "Google"
     },
     {
       "title": "通义千问 - 阿里巴巴AI",
@@ -454,11 +454,179 @@
       "source": "百度"
     },
     {
+      "title": "豆包 - 字节跳动AI",
+      "link": "https://www.doubao.com/",
+      "summary": "字节跳动开发的AI对话助手，支持文本生成、翻译和创意写作。",
+      "published": "2026-05-15T00:00:00",
+      "source": "字节跳动"
+    },
+    {
+      "title": "智谱清言 - 智谱AI",
+      "link": "https://chatglm.cn/",
+      "summary": "智谱AI基于GLM模型开发的AI助手，支持多轮对话和复杂推理。",
+      "published": "2026-05-15T00:00:00",
+      "source": "智谱AI"
+    },
+    {
+      "title": "讯飞星火 - 科大讯飞AI",
+      "link": "https://xinghuo.xfyun.cn/",
+      "summary": "科大讯飞开发的AI助手，支持文本生成、语音交互和多模态理解。",
+      "published": "2026-05-15T00:00:00",
+      "source": "科大讯飞"
+    },
+    {
+      "title": "腾讯元宝 - 腾讯AI",
+      "link": "https://yuanbao.tencent.com/",
+      "summary": "腾讯开发的AI助手，集成微信生态，支持聊天、办公和创意生成。",
+      "published": "2026-05-15T00:00:00",
+      "source": "腾讯"
+    },
+    {
+      "title": "Perplexity - AI搜索引擎",
+      "link": "https://www.perplexity.ai/",
+      "summary": "AI驱动的搜索引擎，提供实时联网搜索和引用来源的回答。",
+      "published": "2026-05-15T00:00:00",
+      "source": "Perplexity AI"
+    },
+    {
+      "title": "Grok - xAI对话AI",
+      "link": "https://grok.com/",
+      "summary": "xAI（Elon Musk）开发的AI助手，风格幽默，支持实时信息获取。",
+      "published": "2026-05-15T00:00:00",
+      "source": "xAI"
+    },
+    {
+      "title": "Mistral AI - Le Chat",
+      "link": "https://chat.mistral.ai/",
+      "summary": "Mistral AI开发的对话助手，以高效开源模型著称。",
+      "published": "2026-05-15T00:00:00",
+      "source": "Mistral AI"
+    },
+    {
+      "title": "HuggingChat - Hugging Face",
+      "link": "https://huggingface.co/chat/",
+      "summary": "Hugging Face开源AI聊天平台，可体验多种开源大语言模型。",
+      "published": "2026-05-15T00:00:00",
+      "source": "Hugging Face"
+    },
+    {
+      "title": "Poe - 多模型AI平台",
+      "link": "https://poe.com/",
+      "summary": "Quora开发的多模型AI平台，可同时使用ChatGPT、Claude等多种模型。",
+      "published": "2026-05-15T00:00:00",
+      "source": "Quora"
+    },
+    {
+      "title": "NotebookLM - Google AI笔记",
+      "link": "https://notebooklm.google.com/",
+      "summary": "Google开发的AI笔记工具，基于用户文档进行问答和总结。",
+      "published": "2026-05-15T00:00:00",
+      "source": "Google"
+    },
+    {
+      "title": "Meta AI - Meta LLaMA",
+      "link": "https://www.meta.ai/",
+      "summary": "Meta（Facebook）开发的AI助手，基于LLaMA模型。",
+      "published": "2026-05-15T00:00:00",
+      "source": "Meta"
+    },
+    {
       "title": "GitHub Copilot - AI编程助手",
       "link": "https://github.com/features/copilot",
       "summary": "GitHub和OpenAI联合开发的AI编程助手，支持多种编程语言。",
       "published": "2026-05-15T00:00:00",
       "source": "GitHub"
+    },
+    {
+      "title": "Cursor - AI代码编辑器",
+      "link": "https://cursor.sh/",
+      "summary": "AI原生代码编辑器，集成对话式编程和代码理解功能。",
+      "published": "2026-05-15T00:00:00",
+      "source": "Anysphere"
+    },
+    {
+      "title": "百川智能 - Baichuan AI",
+      "link": "https://www.baichuan-ai.com/",
+      "summary": "百川智能开发的大语言模型，擅长文本生成和知识问答。",
+      "published": "2026-05-15T00:00:00",
+      "source": "百川智能"
+    },
+    {
+      "title": "海螺AI - MiniMax",
+      "link": "https://www.minimaxi.com/",
+      "summary": "MiniMax开发的AI助手，支持文本、语音和视频多模态交互。",
+      "published": "2026-05-15T00:00:00",
+      "source": "MiniMax"
+    },
+    {
+      "title": "零一万物 - Yi AI",
+      "link": "https://www.lingyiwanwu.com/",
+      "summary": "李开复创办的零一万物开发的大语言模型，支持多语言和复杂推理。",
+      "published": "2026-05-15T00:00:00",
+      "source": "零一万物"
+    },
+    {
+      "title": "天工AI - 昆仑万维",
+      "link": "https://www.tiangong.cn/",
+      "summary": "昆仑万维开发的AI助手，集成搜索、对话和创作功能。",
+      "published": "2026-05-15T00:00:00",
+      "source": "昆仑万维"
+    },
+    {
+      "title": "360智脑 - 360AI",
+      "link": "https://ai.360.com/",
+      "summary": "360开发的AI助手，集成搜索能力和安全分析功能。",
+      "published": "2026-05-15T00:00:00",
+      "source": "360"
+    },
+    {
+      "title": "阶跃星辰 - StepFun",
+      "link": "https://www.stepfun.com/",
+      "summary": "阶跃星辰开发的大语言模型，支持文本生成和多模态理解。",
+      "published": "2026-05-15T00:00:00",
+      "source": "阶跃星辰"
+    },
+    {
+      "title": "商汤日日新 - SenseTime",
+      "link": "https://www.sensetime.com/",
+      "summary": "商汤科技开发的AI平台，专注于计算机视觉和多模态AI。",
+      "published": "2026-05-15T00:00:00",
+      "source": "商汤科技"
+    },
+    {
+      "title": "小冰 - Xiaoice AI",
+      "link": "https://www.xiaoice.com/",
+      "summary": "小冰公司开发的AI框架，提供情感计算和对话式AI服务。",
+      "published": "2026-05-15T00:00:00",
+      "source": "小冰公司"
+    },
+    {
+      "title": "Suno - AI音乐生成",
+      "link": "https://suno.com/",
+      "summary": "AI驱动的音乐生成平台，支持根据文本提示创作完整歌曲。",
+      "published": "2026-05-15T00:00:00",
+      "source": "Suno"
+    },
+    {
+      "title": "Midjourney - AI图像生成",
+      "link": "https://www.midjourney.com/",
+      "summary": "AI图像生成工具，以高质量艺术风格生成著称。",
+      "published": "2026-05-15T00:00:00",
+      "source": "Midjourney"
+    },
+    {
+      "title": "ElevenLabs - AI语音合成",
+      "link": "https://elevenlabs.io/",
+      "summary": "AI语音合成平台，支持多语言、多音色和声音克隆。",
+      "published": "2026-05-15T00:00:00",
+      "source": "ElevenLabs"
+    },
+    {
+      "title": "Runway - AI创意工具",
+      "link": "https://runwayml.com/",
+      "summary": "AI视频和图像创意工具平台，支持文生视频、图生视频等。",
+      "published": "2026-05-15T00:00:00",
+      "source": "Runway"
     }
   ]
 }

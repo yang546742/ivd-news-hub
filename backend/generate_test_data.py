@@ -36,6 +36,8 @@ def generate_initial_data():
         'biotech_sources': curated.get('biotech_sources', []),
         'academic_sources': curated.get('academic_sources', []),
         'industry_data': curated.get('industry_data', []),
+        'literature_sources': curated.get('literature_sources', []),
+        'ai_platforms': curated.get('ai_platforms', []),
         'hot_topics': curated.get('hot_topics', []),
         'last_update': datetime.now().isoformat()
     }
@@ -55,6 +57,8 @@ def generate_initial_data():
     print(f"  - Biotech: {len(news_data['biotech_sources'])}")
     print(f"  - Academic: {len(news_data['academic_sources'])}")
     print(f"  - Industry: {len(news_data['industry_data'])}")
+    print(f"  - Literature: {len(news_data['literature_sources'])}")
+    print(f"  - AI platforms: {len(news_data['ai_platforms'])}")
     print(f"  - Hot topics: {len(news_data['hot_topics'])}")
     print("\nStart the app and open http://localhost:5000 to view!")
 
