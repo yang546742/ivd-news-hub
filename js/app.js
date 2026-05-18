@@ -86,21 +86,6 @@ const WORD_CLOUD_COLORS = [
     '#3b82f6', '#60a5fa', '#93c5fd', '#1d4ed8', '#1e40af',
 ];
 
-// ==================== IVD关键词过滤 ====================
-const IVD_KEYWORDS = [
-    '诊断', '测序', '抗体', '试剂', '生化', '核酸', '疫苗', '基因',
-    '检测', '生物', '医药', '临床', '肿瘤', '免疫', 'PCR', 'NGS',
-    'POCT', '质谱', '流式', '细胞', '蛋白', '酶联', '发光', '层析',
-    '分子', '病理', '标记', '探针', '芯片', '微流控', '医疗',
-    '药监', '卫健委', '医保', '试剂盒', '筛查', '早筛', '标志物',
-    '血液', '血清', '血浆', '尿液', '样本', '体外', '实验室',
-    '感染', '病毒', '细菌', '病原', '耐药', '突变', '靶向',
-    '生物信息', '基因组', '转录组', '蛋白组', '代谢', '审批',
-    '上市', '临床试验', '批文', '注册证', '医疗器械', '体外诊断',
-    'IVD', '新冠', 'COVID', '癌症', '糖尿病', '心脏病', '高血压',
-    '肝病', '肾病', '甲状腺', '激素', '过敏', '炎症', '细胞因子',
-];
-
 // ==================== 提取热词（客户端中文分词） ====================
 function extractHotWords(items, maxWords = 30) {
     try {
@@ -244,14 +229,16 @@ const app = createApp({
             // 热点平台子分类
             platforms: [
                 { key: 'all', name: '全部' },
-                { key: 'daily', name: '📰 60秒', source: '科研通-每日热点' },
-                { key: 'toutiao', name: '📰 头条', source: '今日头条' },
-                { key: 'baidu', name: '🔍 百度', source: '百度热搜' },
-                { key: 'sciencenet-news', name: '🔬 科学网', source: '科学网要闻' },
-                { key: 'sciencenet-blog', name: '📝 科博', source: '科学网博文' },
-                { key: 'zhihu', name: '💡 知乎', source: '知乎热榜' },
-                { key: 'social-media', name: '🌐 社交媒体', source: null,
-                    multi: ['微博热搜', '抖音热榜', '小红书', '喷嚏图卦', 'B站热门'] },
+                { key: 'toutiao', name: '📰 今日头条', source: '今日头条' },
+                { key: 'baidu', name: '🔍 百度热搜', source: '百度热搜' },
+                { key: 'weibo', name: '💬 微博', source: '微博热搜' },
+                { key: 'douyin', name: '🎬 抖音', source: '抖音热榜' },
+                { key: 'sciencenet-news', name: '🔬 科学网-要闻', source: '科学网要闻' },
+                { key: 'sciencenet-blog', name: '📝 科学网-热点博文', source: '科学网博文' },
+                { key: 'zhihu', name: '💡 知乎热榜', source: '知乎热榜' },
+                { key: 'bilibili', name: '📺 哔哩哔哩', source: 'B站热门' },
+                { key: 'xiaohongshu', name: '📕 小红书', source: '小红书' },
+                { key: 'dapenti', name: '🖼️ 喷嚏图卦', source: '喷嚏图卦' },
             ],
         }
     },
@@ -268,23 +255,10 @@ const app = createApp({
             return hashColor(this.randomResult.source);
         },
 
-        // 热点平台仅显示IVD相关新闻
-        filteredHotTopics() {
-            const items = this.allNews['hot_topics'] || [];
-            if (items.length === 0) return items;
-            return items.filter(item => {
-                const text = (item.title + ' ' + (item.summary || '')).toLowerCase();
-                return IVD_KEYWORDS.some(keyword => text.includes(keyword));
-            });
-        },
-
         // 当前分类的新闻（未分页）
         categoryNews() {
             if (this.searchResults.length > 0) {
                 return this.searchResults;
-            }
-            if (this.activeCategory === 'hot_topics') {
-                return this.filteredHotTopics;
             }
             return this.allNews[this.activeCategory] || [];
         },
@@ -295,12 +269,7 @@ const app = createApp({
                 return this.categoryNews;
             }
             const platform = this.platforms.find(p => p.key === this.activePlatform);
-            if (!platform) return this.categoryNews;
-            if (platform.multi) {
-                return this.categoryNews.filter(item =>
-                    platform.multi.some(src => item.source.includes(src))
-                );
-            }
+            if (!platform || !platform.source) return this.categoryNews;
             return this.categoryNews.filter(item => item.source === platform.source);
         },
 
