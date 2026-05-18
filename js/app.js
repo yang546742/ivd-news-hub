@@ -1,34 +1,5 @@
 const { createApp } = Vue;
 
-// ==================== 每日金句库 ====================
-const QUOTES = [
-    "种一棵树最好的时间是十年前，其次是现在。",
-    "生活不是等待风暴过去，而是学会在雨中翩翩起舞。",
-    "你的任务不是寻找爱，而是寻找并拆除你内心建造的障碍。",
-    "山不向我走来，我便向山走去。",
-    "世界上只有一种真正的英雄主义，那就是认清生活真相后依然热爱生活。",
-    "所有的事到最后都会是好事，如果还不是，那它还没到最后。",
-    "不要因为走得太远，而忘了我们为什么出发。",
-    "平凡的人，也可以拥有不平凡的一生。",
-    "道阻且长，行则将至；行而不辍，未来可期。",
-    "每个人都是自己的救世主，你的光就在你心里。",
-    "人生没有白走的路，每一步都算数。",
-    "不是所有坚持都有结果，但总有一些坚持，能从一寸冰封的土地里，培育出十万朵怒放的蔷薇。",
-    "无论你去哪里，无论你做什么，记得带上自己的阳光。",
-    "既然选择了远方，便只顾风雨兼程。",
-    "日出之美便在于它脱胎于最深的黑暗。",
-    "人生的意义在于拓展，而不在于固守。",
-    "勇敢的人不是不落泪的人，而是愿意含着泪继续奔跑的人。",
-    "且视他人之疑目如盏盏鬼火，大胆去走你的夜路。",
-    "生活不需要比别人好，但一定要比以前好。",
-    "愿你千山暮雪，海棠依旧。不为岁月惊扰，平添忧愁。",
-    "心之所向，素履以往。",
-    "没有一个冬天不可逾越，没有一个春天不会来临。",
-    "星光不问赶路人，时光不负有心人。",
-    "慢慢来，比较快。",
-    "心中有丘壑，眉目作山河。",
-];
-
 // ==================== 十二星座数据 ====================
 const ZODIAC = [
     { name: '白羊座', eng: 'Aries', emoji: '♈', date: '3.21-4.19' },
@@ -110,9 +81,24 @@ const STOP_WORDS = new Set([
 ]);
 
 const WORD_CLOUD_COLORS = [
-    '#2563eb', '#7c3aed', '#db2777', '#dc2626', '#ea580c',
-    '#ca8a04', '#16a34a', '#0891b2', '#4f46e5', '#be185d',
-    '#0369a1', '#6d28d9', '#b91c1c', '#c2410c', '#a16207',
+    '#1e40af', '#1d4ed8', '#2563eb', '#3b82f6', '#60a5fa',
+    '#93c5fd', '#bfdbfe', '#1e3a8a', '#1e40af', '#2563eb',
+    '#3b82f6', '#60a5fa', '#93c5fd', '#1d4ed8', '#1e40af',
+];
+
+// ==================== IVD关键词过滤 ====================
+const IVD_KEYWORDS = [
+    '诊断', '测序', '抗体', '试剂', '生化', '核酸', '疫苗', '基因',
+    '检测', '生物', '医药', '临床', '肿瘤', '免疫', 'PCR', 'NGS',
+    'POCT', '质谱', '流式', '细胞', '蛋白', '酶联', '发光', '层析',
+    '分子', '病理', '标记', '探针', '芯片', '微流控', '医疗',
+    '药监', '卫健委', '医保', '试剂盒', '筛查', '早筛', '标志物',
+    '血液', '血清', '血浆', '尿液', '样本', '体外', '实验室',
+    '感染', '病毒', '细菌', '病原', '耐药', '突变', '靶向',
+    '生物信息', '基因组', '转录组', '蛋白组', '代谢', '审批',
+    '上市', '临床试验', '批文', '注册证', '医疗器械', '体外诊断',
+    'IVD', '新冠', 'COVID', '癌症', '糖尿病', '心脏病', '高血压',
+    '肝病', '肾病', '甲状腺', '激素', '过敏', '炎症', '细胞因子',
 ];
 
 // ==================== 提取热词（客户端中文分词） ====================
@@ -209,7 +195,7 @@ const app = createApp({
             searchResults: [],
 
             // UI状态
-            activeCategory: 'hot_topics',
+            activeCategory: 'academic_sources',
             searchKeyword: '',
             currentPage: 1,
             itemsPerPage: 12,
@@ -232,6 +218,9 @@ const app = createApp({
 
             // AI 辣评
             aiHotReview: '',
+
+            // 右侧栏折叠
+            zodiacCollapsed: true,
 
             // 白噪音
             activeNoise: '',
@@ -258,24 +247,16 @@ const app = createApp({
                 { key: 'daily', name: '📰 60秒', source: '科研通-每日热点' },
                 { key: 'toutiao', name: '📰 头条', source: '今日头条' },
                 { key: 'baidu', name: '🔍 百度', source: '百度热搜' },
-                { key: 'weibo', name: '💬 微博', source: '微博热搜' },
-                { key: 'douyin', name: '🎬 抖音', source: '抖音热榜' },
                 { key: 'sciencenet-news', name: '🔬 科学网', source: '科学网要闻' },
                 { key: 'sciencenet-blog', name: '📝 科博', source: '科学网博文' },
                 { key: 'zhihu', name: '💡 知乎', source: '知乎热榜' },
-                { key: 'bilibili', name: '📺 B站', source: 'B站热门' },
-                { key: 'xiaohongshu', name: '📕 小红书', source: '小红书' },
-                { key: 'dapenti', name: '🖼️ 喷嚏', source: '喷嚏图卦' },
+                { key: 'social-media', name: '🌐 社交媒体', source: null,
+                    multi: ['微博热搜', '抖音热榜', '小红书', '喷嚏图卦', 'B站热门'] },
             ],
         }
     },
 
     computed: {
-        // 每日金句
-        dailyQuote() {
-            return QUOTES[DAY_OF_YEAR % QUOTES.length];
-        },
-
         // 今日星座运势
         zodiac() {
             return ZODIAC.map((_, i) => generateZodiac(i, DAY_OF_YEAR));
@@ -287,10 +268,23 @@ const app = createApp({
             return hashColor(this.randomResult.source);
         },
 
+        // 热点平台仅显示IVD相关新闻
+        filteredHotTopics() {
+            const items = this.allNews['hot_topics'] || [];
+            if (items.length === 0) return items;
+            return items.filter(item => {
+                const text = (item.title + ' ' + (item.summary || '')).toLowerCase();
+                return IVD_KEYWORDS.some(keyword => text.includes(keyword));
+            });
+        },
+
         // 当前分类的新闻（未分页）
         categoryNews() {
             if (this.searchResults.length > 0) {
                 return this.searchResults;
+            }
+            if (this.activeCategory === 'hot_topics') {
+                return this.filteredHotTopics;
             }
             return this.allNews[this.activeCategory] || [];
         },
@@ -301,7 +295,12 @@ const app = createApp({
                 return this.categoryNews;
             }
             const platform = this.platforms.find(p => p.key === this.activePlatform);
-            if (!platform || !platform.source) return this.categoryNews;
+            if (!platform) return this.categoryNews;
+            if (platform.multi) {
+                return this.categoryNews.filter(item =>
+                    platform.multi.some(src => item.source.includes(src))
+                );
+            }
             return this.categoryNews.filter(item => item.source === platform.source);
         },
 
@@ -595,95 +594,6 @@ const app = createApp({
             } catch(e) {}
             this.activeNoise = '';
         },
-    },
-
-    // ---------- 星座运势 ----------
-    zodiacStyle(luck) {
-        const colors = ['#ef4444','#f97316','#eab308','#22c55e','#06b6d4','#8b5cf6'];
-        return { '--zodiac-accent': colors[luck] || '#eab308' };
-    },
-
-    starString(luck) {
-        return '★'.repeat(luck) + '☆'.repeat(5 - luck);
-    },
-
-    // ---------- 白噪音 ----------
-    toggleNoise(type) {
-        if (this.activeNoise === type) {
-            this.stopNoise();
-            return;
-        }
-        this.startNoise(type);
-    },
-
-    startNoise(type) {
-        this.stopNoise();
-
-        try {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            this._noiseCtx = ctx;
-
-            const bufferSize = ctx.sampleRate * 2;
-            const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-            const data = buffer.getChannelData(0);
-
-            for (let i = 0; i < bufferSize; i++) {
-                if (type === 'rain') {
-                    data[i] = (Math.random() * 2 - 1) * 0.4;
-                } else if (type === 'forest') {
-                    data[i] = (Math.random() * 2 - 1) * 0.3;
-                    if (i > 0) data[i] += data[i - 1] * 0.7;
-                    data[i] *= 0.15;
-                } else {
-                    data[i] = (Math.random() * 2 - 1) * 0.5;
-                    if (i % 200 < 2) data[i] *= 3;
-                }
-            }
-
-            const source = ctx.createBufferSource();
-            source.buffer = buffer;
-            source.loop = true;
-
-            if (type === 'rain') {
-                const lp = ctx.createBiquadFilter();
-                lp.type = 'lowpass';
-                lp.frequency.value = 800;
-                source.connect(lp);
-                lp.connect(ctx.destination);
-            } else if (type === 'forest') {
-                const hp = ctx.createBiquadFilter();
-                hp.type = 'highpass';
-                hp.frequency.value = 100;
-                const lp = ctx.createBiquadFilter();
-                lp.type = 'lowpass';
-                lp.frequency.value = 1000;
-                source.connect(hp);
-                hp.connect(lp);
-                lp.connect(ctx.destination);
-            } else {
-                const bp = ctx.createBiquadFilter();
-                bp.type = 'bandpass';
-                bp.frequency.value = 500;
-                bp.Q.value = 0.5;
-                source.connect(bp);
-                bp.connect(ctx.destination);
-            }
-
-            source.start();
-            this._noiseSource = source;
-            this.activeNoise = type;
-        } catch(e) {
-            console.warn('白噪音播放失败:', e);
-            this.activeNoise = '';
-        }
-    },
-
-    stopNoise() {
-        try {
-            if (this._noiseSource) { this._noiseSource.stop(); this._noiseSource = null; }
-            if (this._noiseCtx) { this._noiseCtx.close(); this._noiseCtx = null; }
-        } catch(e) {}
-        this.activeNoise = '';
     },
 
     mounted() {
