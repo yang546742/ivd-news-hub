@@ -1224,6 +1224,189 @@ a {
     font-weight: 600;
 }
 
+/* ==================== 暗色模式 ==================== */
+
+:root.dark {
+    --bg: #1c1917;
+    --card-bg: rgba(41, 37, 36, 0.85);
+    --card-border: rgba(68, 64, 63, 0.8);
+    --card-shadow: 0 1px 3px rgba(0,0,0,0.2), 0 2px 10px rgba(0,0,0,0.15);
+    --card-shadow-hover: 0 4px 16px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.2);
+    --glow-border: rgba(14, 165, 233, 0.08);
+    --text-primary: #e7e5e4;
+    --text-secondary: #a8a29e;
+    --text-muted: #78716c;
+    --accent: #57534e;
+    --accent-light: #292524;
+    --border: #44403c;
+    --border-light: #292524;
+}
+
+:root.dark body {
+    background-image:
+        radial-gradient(ellipse at 20% 20%, rgba(14, 165, 233, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
+}
+
+:root.dark .navbar {
+    background: rgba(28, 25, 23, 0.9);
+    border-bottom-color: var(--border);
+}
+
+:root.dark .footer {
+    background: rgba(28, 25, 23, 0.9);
+    border-top-color: var(--border);
+}
+
+:root.dark .search-box {
+    border-color: var(--border);
+}
+
+:root.dark .search-box:focus-within {
+    border-color: rgba(14, 165, 233, 0.25);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.06), var(--card-shadow);
+}
+
+:root.dark .quote-banner {
+    background: linear-gradient(135deg, rgba(30, 64, 175, 0.25) 0%, rgba(30, 58, 138, 0.2) 50%, rgba(15, 23, 42, 0.25) 100%);
+    border-bottom-color: rgba(37, 99, 235, 0.08);
+    color: #93c5fd;
+}
+
+:root.dark .random-modal {
+    background: #292524;
+}
+
+:root.dark .random-modal-title a {
+    color: #e7e5e4;
+}
+
+:root.dark .btn-search {
+    background: #57534e;
+}
+
+:root.dark .btn-search:hover:not(:disabled) {
+    background: #78716c;
+}
+
+:root.dark .btn-refresh {
+    background: rgba(41, 37, 36, 0.5);
+}
+
+:root.dark .sub-tab-button:hover {
+    background: var(--accent-light);
+}
+
+:root.dark .btn-darkmode {
+    color: #fbbf24;
+    border-color: rgba(251, 191, 36, 0.2);
+}
+
+:root.dark .btn-darkmode:hover {
+    border-color: rgba(251, 191, 36, 0.4);
+    background: rgba(251, 191, 36, 0.06);
+}
+
+/* ==================== 暗色模式切换按钮 ==================== */
+
+.btn-darkmode {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: rgba(255,255,255,0.5);
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.btn-darkmode:hover {
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+    background: var(--accent-light);
+}
+
+/* ==================== 滚动进度条 ==================== */
+
+.scroll-progress-track {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 99;
+    background: transparent;
+}
+
+.scroll-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+    border-radius: 0 2px 2px 0;
+    transition: width 0.1s linear;
+}
+
+/* ==================== 返回顶部按钮 ==================== */
+
+.btn-back-to-top {
+    position: fixed;
+    bottom: 32px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.08);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 50;
+    opacity: 0.9;
+}
+
+.btn-back-to-top:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.1);
+    opacity: 1;
+}
+
+.btn-back-to-top:active {
+    transform: translateY(-1px);
+}
+
+/* ==================== 卡片入场动画 ==================== */
+
+.news-card {
+    animation: card-fade-in 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.news-card:nth-child(1) { animation-delay: 0.01s; }
+.news-card:nth-child(2) { animation-delay: 0.03s; }
+.news-card:nth-child(3) { animation-delay: 0.05s; }
+.news-card:nth-child(4) { animation-delay: 0.07s; }
+.news-card:nth-child(5) { animation-delay: 0.09s; }
+.news-card:nth-child(6) { animation-delay: 0.11s; }
+.news-card:nth-child(7) { animation-delay: 0.13s; }
+.news-card:nth-child(8) { animation-delay: 0.15s; }
+
+@keyframes card-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* ==================== 骰子旋转动画 ==================== */
 
 .dice-btn .dice-icon {

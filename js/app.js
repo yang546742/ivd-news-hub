@@ -192,7 +192,7 @@ const app = createApp({
             totalNews: 0,
 
             // 热点平台子分类
-            activePlatform: 'all',
+            activePlatform: 'global_daily',
 
             // 热词云
             hotWords: [],
@@ -206,6 +206,12 @@ const app = createApp({
 
             // 右侧栏折叠
             zodiacCollapsed: true,
+
+            // 暗色模式
+            darkMode: false,
+
+            // 返回顶部
+            showBackToTop: false,
 
             // 白噪音
             activeNoise: '',
@@ -228,7 +234,7 @@ const app = createApp({
 
             // 热点平台子分类
             platforms: [
-                { key: 'all', name: '全部' },
+                { key: 'global_daily', name: '🌍 精选全球要闻' },
                 { key: 'toutiao', name: '📰 今日头条', source: '今日头条' },
                 { key: 'baidu', name: '🔍 百度热搜', source: '百度热搜' },
                 { key: 'weibo', name: '💬 微博', source: '微博热搜' },
@@ -265,8 +271,11 @@ const app = createApp({
 
         // 热点平台过滤后的新闻
         filteredPlatformNews() {
-            if (this.activeCategory !== 'hot_topics' || this.activePlatform === 'all') {
+            if (this.activeCategory !== 'hot_topics') {
                 return this.categoryNews;
+            }
+            if (this.activePlatform === 'global_daily') {
+                return this.allNews['global_news'] || [];
             }
             const platform = this.platforms.find(p => p.key === this.activePlatform);
             if (!platform || !platform.source) return this.categoryNews;
@@ -566,10 +575,50 @@ const app = createApp({
             } catch(e) {}
             this.activeNoise = '';
         },
+
+        // ---------- 暗色模式 ----------
+        toggleDarkMode() {
+            this.darkMode = !this.darkMode;
+            document.documentElement.classList.toggle('dark', this.darkMode);
+            try {
+                localStorage.setItem('ivd-dark-mode', this.darkMode ? '1' : '0');
+            } catch(e) {}
+        },
+
+        // ---------- 滚动监听 ----------
+        onScroll() {
+            const y = window.scrollY;
+            this.showBackToTop = y > 300;
+            // 更新阅读进度条
+            const bar = document.getElementById('scroll-progress-bar');
+            if (bar) {
+                const scrollTop = y;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+                bar.style.width = Math.min(progress, 100) + '%';
+            }
+        },
+
+        // ---------- 返回顶部 ----------
+        scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
     },
 
     mounted() {
         this.init();
+
+        // 恢复暗色模式偏好
+        try {
+            const saved = localStorage.getItem('ivd-dark-mode');
+            if (saved === '1') {
+                this.darkMode = true;
+                document.documentElement.classList.add('dark');
+            }
+        } catch(e) {}
+
+        // 监听滚动
+        window.addEventListener('scroll', this.onScroll, { passive: true });
     },
 });
 

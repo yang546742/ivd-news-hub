@@ -39,7 +39,8 @@ def generate_initial_data():
         'literature_sources': curated.get('literature_sources', []),
         'ai_platforms': curated.get('ai_platforms', []),
         'hot_topics': curated.get('hot_topics', []),
-        'last_update': datetime.now().isoformat()
+        'global_news': curated.get('global_news', []),
+        'last_update': datetime.utcnow().isoformat() + 'Z'
     }
 
     data_dir = 'data'
@@ -60,6 +61,7 @@ def generate_initial_data():
     print(f"  - Literature: {len(news_data['literature_sources'])}")
     print(f"  - AI platforms: {len(news_data['ai_platforms'])}")
     print(f"  - Hot topics: {len(news_data['hot_topics'])}")
+    print(f"  - Global news: {len(news_data['global_news'])}")
     print("\nStart the app and open http://localhost:5000 to view!")
 
 
