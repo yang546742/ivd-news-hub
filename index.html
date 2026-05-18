@@ -28,7 +28,7 @@
                     </div>
                     <div class="nav-title">
                         <h1>IVD行业信息聚合平台</h1>
-                        <span class="nav-subtitle" v-if="lastUpdate !== '加载中...'">更新于 {{ lastUpdate }}</span>
+                        <span class="nav-subtitle" v-if="lastUpdate !== '加载中...'">更新于 {{ formatDate(lastUpdate) }}</span>
                     </div>
                 </div>
                 <div class="nav-menu">
