@@ -11,11 +11,11 @@ if sys.stdout.encoding is None or sys.stdout.encoding.lower() not in ['utf-8', '
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
-# 获取前端目录的绝对路径
-frontend_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'frontend')
+# 获取项目根目录（主前端文件所在位置）
+root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # 创建Flask应用 - 分别配置静态文件夹和URL路径
-app = Flask(__name__, static_folder=frontend_dir, static_url_path='')
+app = Flask(__name__, static_folder=root_dir, static_url_path='')
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # 初始化爬虫和定时任务
@@ -30,7 +30,7 @@ scheduler.start()
 @app.route('/', methods=['GET'])
 def home():
     """主页"""
-    return send_from_directory(frontend_dir, 'index.html')
+    return send_from_directory(root_dir, 'index.html')
 
 @app.route('/api', methods=['GET'])
 def api_home():
@@ -158,16 +158,16 @@ def crawl_now():
 @app.route('/static/<path:path>')
 def send_static(path):
     """提供静态文件（CSS、JS等）"""
-    return send_from_directory(frontend_dir, path)
+    return send_from_directory(root_dir, path)
 
 @app.route('/<path:path>')
 def send_any_static(path):
     """提供任何静态文件（JS、CSS等）"""
-    file_path = os.path.join(frontend_dir, path)
+    file_path = os.path.join(root_dir, path)
     if os.path.isfile(file_path):
-        return send_from_directory(frontend_dir, path)
+        return send_from_directory(root_dir, path)
     # 如果文件不存在，返回主页
-    return send_from_directory(frontend_dir, 'index.html')
+    return send_from_directory(root_dir, 'index.html')
 
 # ==================== 错误处理 ====================
 

@@ -19,10 +19,11 @@ class NewsCrawler:
     def __init__(self):
         self.headers = CRAWLER_CONFIG['headers']
         self.timeout = CRAWLER_CONFIG['timeout']
-        self.data_dir = 'data'
+        self.data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data')
         os.makedirs(self.data_dir, exist_ok=True)
         self.data_file = os.path.join(self.data_dir, 'news.json')
-        self.curated_file = os.path.join(self.data_dir, 'curated_news.json')
+        # curated_news.json 保持在 backend/data/ 下作为回退数据
+        self.curated_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'curated_news.json')
         self.load_existing_data()
 
     def load_existing_data(self):
@@ -221,13 +222,18 @@ class NewsCrawler:
                     new_items.extend(news)
                     print(f"  + Got {len(news)} items from {source['name']}")
                 else:
+                    # 只保留该具体来源的旧数据，避免混入无关的硬编码内容
                     if category_key in old_news:
-                        new_items.extend(old_news[category_key])
-                        print(f"  - No data from {source['name']}, kept {len(old_news[category_key])} existing items")
+                        kept = [item for item in old_news[category_key] if item.get('source') == source['name']]
+                        if kept:
+                            new_items.extend(kept)
+                            print(f"  - No data from {source['name']}, kept {len(kept)} existing items from this source")
             except Exception as e:
                 print(f"  ! Error from {source['name']}: {e}")
                 if category_key in old_news:
-                    new_items.extend(old_news[category_key])
+                    kept = [item for item in old_news[category_key] if item.get('source') == source['name']]
+                    if kept:
+                        new_items.extend(kept)
         return new_items
 
     def crawl_all_sources(self):

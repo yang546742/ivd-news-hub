@@ -218,6 +218,6 @@ CRAWLER_CONFIG = {
 
 # 定时任务配置
 SCHEDULER_CONFIG = {
-    'interval_hours': 12,
+    'interval_hours': 2,
     'max_retries': 3,
 }
